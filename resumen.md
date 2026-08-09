@@ -69,7 +69,7 @@ Interacción y difusión (Instagram): Utiliza sus redes sociales para anunciar i
 ---
 ---
 
-Proyecto digital — Martín Nocetti / MNN
+Proyecto digital — Martín Nocetti / MN
 1. Contexto del proyecto
 Martín Nocetti es periodista y también trabaja comercialmente como publicista. Actualmente tiene un espacio propio dentro de una radio por el cual paga aproximadamente $50.000 uruguayos mensuales, equivalentes a unos US$1.250/mes.
 Su actividad combina:
@@ -510,47 +510,22 @@ Campañas.
 Paquetes comerciales.
 La ventaja sería llegar a 2028 con una audiencia existente, en lugar de intentar construirla durante la campaña.
 24. Identidad de marca
-Se discutió el nombre:
-Martín Nocetti
-El dominio:
-martinnocetti.uy
-es funcional, pero visualmente tiene el problema de las dos “n” juntas.
-También se consideró:
-martin-nocetti.uy
-que es más legible, aunque el guion no es ideal para una marca.
-Una opción más fuerte sería utilizar una marca independiente del nombre completo.
-Surgió:
+Marca definida:
 
-MNN
-como acrónimo de:
-Martín Nocetti Notas
-La idea resulta interesante porque:
-
-No ata la marca a la radio.
-Permite crear distintas secciones.
-Puede funcionar como medio.
-Es corta.
-Puede funcionar visualmente.
-Permite crecer hacia video, streaming, entrevistas y publicidad.
-Ejemplos:
-
-MNN Entrevistas.
-MNN Noticias.
-MNN En Vivo.
-MNN Historias.
-MNN Podcast.
-MNN 2028.
-Sin embargo, quedó una consideración:
-“Notas” podría limitar demasiado la percepción de la marca.
-Una alternativa más flexible sería:
-
-MNN — Martín Nocetti
-y utilizar Notas como sección/producto:
-
-MNN
-Martín Nocetti
+MN — Martín Nocetti
 Periodismo · Entrevistas · Actualidad
-Esto deja abierta la posibilidad de que MNN sea mucho más que un portal de notas.
+
+Logo oficial:
+fotos/mnn-logo-opcion-2-negro-dorado.png
+(negro + dorado; ver fotos/mnn-logo-opcion-2-negro-dorado-colores.txt)
+
+La marca MN:
+No ata el producto a la radio.
+Permite crear secciones (Entrevistas, Noticias, En Vivo, Historias, Podcast).
+Es corta y escalable a video, streaming y publicidad.
+“Notas” es una sección/producto, no el nombre de la marca.
+
+Se descartó usar el nombre completo como marca primaria (martinnocetti.uy / martin-nocetti.uy) por legibilidad y fuerza de marca.
 25. Dominio
 Para una marca orientada principalmente a Maldonado/Uruguay, la primera opción considerada fue:
 .uy
@@ -563,20 +538,19 @@ Protección
 Si está disponible:
 marca.com
 y redireccionarlo al dominio principal.
-En el caso de MNN, sería interesante verificar:
+En el caso de MN, verificar:
 
-mnn.uy
-mnn.com.uy
-mnn.com
-Pero antes de elegir definitivamente MNN hay que verificar:
+mn.uy
+mn.com.uy
+(y protección .com si aplica)
 
+Además validar:
 Disponibilidad de dominios.
 Que no exista una marca relevante con las mismas siglas.
 Redes sociales disponibles.
 Facilidad de pronunciación.
 Facilidad para recordar.
 Posibles asociaciones negativas.
-No se debería registrar el dominio definitivo antes de validar la marca.
 26. Qué NO hacer
 Se identificaron varios errores que conviene evitar.
 
@@ -604,7 +578,7 @@ La plataforma debe empezar a generar datos.
 El MVP podría tener:
 
 Inicio
-Identidad MNN.
+Identidad MN.
 Últimas entrevistas.
 Últimas noticias/notas.
 Botón “Escuchar en vivo”.

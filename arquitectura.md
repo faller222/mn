@@ -1,6 +1,6 @@
-# Arquitectura — MNN (Martín Nocetti)
+# Arquitectura — MN (Martín Nocetti)
 
-Documento de decisiones técnicas del proyecto digital MNN.  
+Documento de decisiones técnicas del proyecto digital MN.  
 Última actualización: 2026-08-09.
 
 ---
@@ -9,7 +9,7 @@ Documento de decisiones técnicas del proyecto digital MNN.
 
 Construir la infraestructura de un medio digital personal alrededor de Martín Nocetti:
 
-- presencia web con identidad de marca (MNN),
+- presencia web con identidad de marca (MN),
 - escucha en vivo (stream de Radio Brava),
 - contacto comercial,
 - medición de audiencia (GA4) para vender publicidad con datos,
@@ -90,7 +90,7 @@ Formspree cubre el formulario sin BFF propio en V1.
 
 Incluye:
 
-- Landing MNN (marca, bio, CTAs).
+- Landing MN (marca, bio, CTAs).
 - Play del stream de Radio Brava.
 - Links a Spotify / Instagram (X con cuidado; preferir link sobre iframe frágil).
 - Formulario de contacto (Formspree).
