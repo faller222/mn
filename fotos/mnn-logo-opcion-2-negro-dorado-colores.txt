@@ -1,0 +1,13 @@
+Logo: mnn-logo-opcion-2-negro-dorado.png
+
+Fondo (negro)
+  RGB: 0, 0, 0
+  HEX: #000000
+
+Letras / puntito (dorado suave)
+  RGB: 220, 182, 63
+  HEX: #DCB63F
+
+Nota: el dorado del PNG tiene ligera variación por antialiasing.
+Promedio aproximado del área dorada: RGB 211, 175, 61
+Usar el mode (220, 182, 63) como color sólido de marca.
