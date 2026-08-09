@@ -4,9 +4,13 @@
                     [> LIVE mini-bar global]
                               ^
 Home ---> Lista Notas ---> Nota
- |            ^            |
+ |  |         ^            |
+ |  +-- Spotify embed      |
+ |  |   (show, lazy)       |
  |            +------------+
- +---> About ---> Contacto <-> WhatsApp
+ +---> About ---> Spotify embed
+ |         \
+ +---> Contacto <-> WhatsApp
  +---> Contacto (Formspree)
  +---> (footer) Admin Login ---> Payload Editor
                                       |

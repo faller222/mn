@@ -5,6 +5,7 @@
 | Marca | MN — Martín Nocetti |
 | Logo | `fotos/mnn-logo-opcion-2-negro-dorado.png` |
 | CTA dominante | Escuchar en vivo → Contacto comercial → Consumo de entrevistas |
+| Podcast | Spotify show embed: `1WxPXeCzGu3D8dJeTwwAd3` (Home secundario + About) |
 | Stack de referencia | Next.js + Payload + Formspree + GA4 + stream FM Brava |
 
 ### Breakpoints globales
