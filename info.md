@@ -3,7 +3,7 @@
 Fuente única de contenidos, datos y voz de marca para el sitio de **Martín Nocetti**.  
 Última actualización: 2026-08-09.
 
-Relacionados: `resumen.md` (estrategia), `arquitectura.md` (stack + credenciales), `UxUI/` (pantallas).
+Relacionados: `arquitectura.md` (stack + credenciales), `UxUI/` (pantallas).
 
 ---
 
@@ -34,21 +34,16 @@ Relacionados: `resumen.md` (estrategia), `arquitectura.md` (stack + credenciales
 | Negro marca | `#000000` | Confirmado |
 | Dorado marca | `#DCB63F` | Confirmado |
 | Dominio | `nocetti.uy` | Tentativo |
-| Contacto V1 | Solo formulario (Formspree) | Sin WhatsApp por ahora |
+| Contacto V1 | Solo formulario (Formspree) | Sin CTA WhatsApp de contacto |
 
-### Política de radio / stream (crítica)
+### Política de radio / stream (interna — no es copy)
 
-La web **no es landing de la emisora**. Objetivo: audiencia propia (MN / Nocetti), no regalar marca ni clicks a la radio de la que se quiere salir.
+Reglas de implementación. No se traducen a texto de UI.
 
 - En hero, nav, About, SEO y press kit: hablar del **programa** y de **MN**, nunca del nombre comercial de la emisora ni de su frecuencia.
-- El player puede retransmitir la señal existente como utilidad temporal.
-- Al pie del player (o footer de la página con player): **disclaimer técnico**, no CTA hacia la radio.
-- No linkear al sitio de la emisora desde menú, hero ni About.
-
-**Disclaimer propuesto (pie del player):**
-> La señal en vivo se retransmite desde una emisora asociada. MN no es el sitio oficial de esa radio.
-
-*(Ajustar redacción legal si hace falta; el punto es: procedencia mínima, cero promoción.)*
+- El player puede usar la URL de stream existente; la UI muestra solo MN / nombre del programa.
+- No linkear al sitio de la emisora desde menú, hero, About ni footer.
+- No explicar en pantalla la procedencia de la señal ni la relación con otra radio.
 
 ---
 
@@ -62,7 +57,7 @@ La web **no es landing de la emisora**. Objetivo: audiencia propia (MN / Nocetti
 | Spotify embed | `https://open.spotify.com/embed/show/1WxPXeCzGu3D8dJeTwwAd3?utm_source=generator` | iframe oficial |
 | Stream audio | `https://fmbrava-2.nty.uy` | Solo como fuente técnica del player |
 | Formspree | `https://formspree.io/f/xzepdwlp` | Formulario `/contacto` |
-| WhatsApp | — | **No publicar por ahora** |
+| WhatsApp (contacto) | — | **No en `/contacto` V1** |
 | Sitio de la emisora | — | **No linkear en UI** |
 
 **Nota Spotify:** show activo; oEmbed reciente *# 179 - Lic Leticia Correa* (~180 entrevistas).
@@ -101,7 +96,7 @@ Credenciales técnicas (GA4, Cloudinary, Supabase): ver `arquitectura.md` §11.
 
 - No mezclar “yo” y “Martín Nocetti es” en el mismo párrafo.
 - No nombrar la emisora ni su frecuencia en copy público.
-- No poner WhatsApp hasta nueva decisión.
+- No poner CTA/número de WhatsApp de contacto hasta nueva decisión (share de notas: sí).
 - No inventar premios, ratings ni “líder de audiencia”.
 - No vender el sitio como portal genérico de noticias.
 
@@ -166,7 +161,6 @@ Usar como “han pasado por su micrófono”, no como endosos:
 | Sub | Streaming · MN |
 | CTA primario | Escuchar en vivo |
 | Aria | Escuchar en vivo — programa de Martín Nocetti |
-| Pie player | Disclaimer §1 |
 
 ### 6.2 Home — Hero (fuera de aire)
 
@@ -199,7 +193,7 @@ Usar como “han pasado por su micrófono”, no como endosos:
 | Biografía | §5.3 |
 | Trayectoria | §5.4 |
 | Podcast | Spotify embed |
-| Redes | Instagram (sin WhatsApp) |
+| Redes | Instagram |
 | Archivo | +180 entrevistas · +100 horas |
 
 ### 6.5 Contacto (`/contacto`)
@@ -215,9 +209,9 @@ Usar como “han pasado por su micrófono”, no como endosos:
 | Submit | Enviar mensaje |
 | Éxito | Mensaje enviado. Te respondemos a la brevedad. |
 | Error | No se pudo enviar. Revisá los campos o intentá de nuevo. |
-| WhatsApp | **No mostrar** |
 
-**Prefill:** `/contacto?asunto=Publicidad`
+**Prefill:** `/contacto?asunto=Publicidad`  
+**Contacto V1:** solo formulario (sin número/CTA de WhatsApp en la página).
 
 ### 6.6 Nota — CTA final
 
@@ -250,7 +244,7 @@ Usar como “han pasado por su micrófono”, no como endosos:
 | Facturación | ~US$50k/año | **No** |
 | Costo radio | ~US$1.250/mes | **No** |
 | Target independencia | ~US$5k/mes | **No** |
-| WhatsApp en UI | No por ahora | — |
+| WhatsApp de contacto | No en V1 | — |
 | Dominio | nocetti.uy | Tentativo |
 | Foco | Maldonado / este | Sí |
 
@@ -274,7 +268,7 @@ ID: `G-RHQPTDD0RN`
 | 2 | Enviar formulario | `contact_submit` |
 | 3 | Abrir Spotify | `click_spotify` |
 | 4 | Vista / click nota (V2) | `view_article` / `click_article` |
-| — | WhatsApp | Diferido (no V1) |
+| — | WhatsApp contacto | Diferido (no V1) |
 
 ---
 
@@ -290,7 +284,7 @@ ID: `G-RHQPTDD0RN`
 | Dominio | `nocetti.uy` | Tentativo |
 | Cloudinary | cloud `sswxkhoq` | Ver arquitectura |
 | Supabase | `lxxikqonisrcqppvdrhx` | Ver arquitectura |
-| WhatsApp | — | Fuera de V1 |
+| WhatsApp contacto | — | Fuera de V1 |
 | Horario programa | — | Pendiente |
 
 ---
@@ -306,13 +300,11 @@ ID: `G-RHQPTDD0RN`
 | `/noticias/[slug]` | Nota 1ª persona |
 | `/admin` | Payload |
 
-Menú: Inicio · En vivo · Noticias · Sobre Martín · Contacto (+ Escuchar en vivo). **Sin WhatsApp.**
+Menú: Inicio · En vivo · Noticias · Sobre Martín · Contacto (+ Escuchar en vivo).
 
 ---
 
 ## 12. Textos legales (borrador)
-
-**Disclaimer stream:** ver §1.
 
 **Separación editorial:**
 > El contenido periodístico de MN se diferencia claramente de la publicidad y los contenidos patrocinados, que se identifican como tales.
@@ -344,9 +336,10 @@ Usar:
 
 Evitar:
 
-- Nombrar emisora / frecuencia.  
+- Nombrar emisora / frecuencia (regla interna §1).  
+- Explicar en UI la procedencia del stream o la relación con otra radio.  
 - “El más escuchado de Uruguay” sin métrica.  
-- WhatsApp como CTA hasta que se decida lo contrario.
+- CTA de WhatsApp de contacto hasta nueva decisión (compartir por WhatsApp en notas sí está permitido).
 
 ---
 

@@ -18,12 +18,10 @@
 +----------------------------+
 | Biografia                  |
 |                            |
-| Parrafo 1: quien es y      |
-| que hace (radio, entrevistas|
-| comunidad).                |
+| Martin Nocetti es...       |
+| (bio media / larga de      |
+| info.md §5.1–5.3)          |
 |                            |
-| Parrafo 2: enfoque local / |
-| actualidad / deporte.      |
 +----------------------------+
 | Trayectoria                |
 | * Programa matutino — ...  |
@@ -40,7 +38,7 @@
 | [ Abrir en Spotify -> ]    |
 +----------------------------+
 | Redes                      |
-| [ Instagram ]              |  <- sin WhatsApp V1
+| [ Instagram ]              |
 +----------------------------+
 | Archivo                    |
 | +180 entrevistas · 100h+   |
@@ -71,6 +69,10 @@
 - iframe con `title="Podcast MN en Spotify"`.
 
 **Interacciones**
-- En vivo → player (sin brandear emisora); Contactar → form Formspree; Ver entrevistas → lista; Instagram → outbound + tracking; Spotify → embed + deep link. Sin WhatsApp V1.
+- En vivo → player; Contactar → `/contacto`; Ver entrevistas → lista; Instagram → outbound + tracking; Spotify → embed + deep link.
+
+**Notas de implementación (no UI)**
+- Bio: `info.md` §5.3. Sin nombre de emisora ni CTA de WhatsApp de contacto.
+- Formulario: Formspree (endpoint en `arquitectura.md`).
 
 ---

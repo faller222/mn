@@ -11,7 +11,6 @@
 | Directo                    |
 | Maldonado, Uruguay         |
 | Instagram @mnocetti1       |
-| (sin WhatsApp en V1)       |
 +----------------------------+
 | Escribinos                 |
 |                            |
@@ -36,8 +35,8 @@
 |                            |
 | [      Enviar mensaje     ]|
 |                            |
-| Formspree xzepdwlp ·       |
-| privacidad...              |
+| Los datos se usan solo     |
+| para responder tu consulta.|
 +----------------------------+
 
 EXITO:
@@ -82,7 +81,10 @@ ERROR:
 - Orden de tab lógico; botón Enviar no solo por color.
 
 **Interacciones**
-- Sin WhatsApp en V1.
 - Tras éxito, ofrecer LIVE o últimas entrevistas (retención).
+
+**Notas de implementación (no UI)**
+- Contacto V1: solo formulario. Sin número ni CTA de WhatsApp en esta página.
+- Compartir por WhatsApp en notas (otra pantalla) es independiente de esta regla.
 
 ---

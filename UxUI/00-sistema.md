@@ -7,9 +7,10 @@
 | CTA dominante | Escuchar en vivo → Contacto (form) → Consumo de entrevistas |
 | Podcast | Spotify show embed: `1WxPXeCzGu3D8dJeTwwAd3` (Home secundario + About) |
 | Dominio | `nocetti.uy` (tentativo) |
-| Stack de referencia | Next.js + Payload + Formspree + GA4 + retransmisor (sin brandear emisora) |
-| WhatsApp | Fuera de V1 |
+| Stack de referencia | Next.js + Payload + Formspree + GA4 + stream |
+| Contacto V1 | Formulario Formspree (sin CTA WhatsApp de contacto) |
 | Formspree | `https://formspree.io/f/xzepdwlp` |
+| Stream en UI | Solo MN / programa — ver política en `info.md` |
 
 ### Breakpoints globales
 

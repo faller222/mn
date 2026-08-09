@@ -37,7 +37,7 @@
 |                            |
 +----------------------------+
 | Compartir                  |
-| [WA] [X] [FB] [Copiar link]|
+| [WhatsApp] [X] [FB] [Copiar]|
 +----------------------------+
 | Relacionadas               |
 | +------+ +------+          |
@@ -73,5 +73,6 @@
 - Relacionadas → otra nota.
 - CTA pautar → Contacto con `?asunto=Publicidad` prefilled.
 - Evento `view_article` al 50% de scroll o 15s.
+- Compartir por WhatsApp = share del artículo (permitido). Distinto de CTA de contacto por WhatsApp en `/contacto`.
 
 ---

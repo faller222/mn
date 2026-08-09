@@ -14,7 +14,6 @@
 |  |                      |  |
 |  | [ > ESCUCHAR EN VIVO ]| |  <- CTA primario
 |  |  Streaming · MN       |  |
-|  |  (disclaimer al pie)  |  |
 |  +----------------------+  |
 |                            |
 |  Hoy · Destacados          |
@@ -48,7 +47,7 @@
 | +------------------------+ |
 | | Publica con MN         | |
 | | Anunciantes · Maldonado| |
-| | [ Contactar ]          | |  <- CTA comercial (sin WhatsApp V1)
+| | [ Contactar ]          | |  <- CTA comercial
 | +------------------------+ |
 |                            |
 | Instagram · About · Contacto|
@@ -87,15 +86,14 @@ Menu hamburguesa (overlay):
 
 **Conversión (prioridad)**
 1. `> LIVE` / Escuchar en vivo → evento GA4 `play_radio`
-2. Contactar → `/contacto` → `contact_submit` (Formspree `xzepdwlp`)
+2. Contactar → `/contacto` → `contact_submit`
 3. Click en card → `click_article`
 4. Spotify → `click_spotify` (link fallback). El embed no da métricas útiles para vender publicidad.
-5. WhatsApp: **no en V1**.
 
 **A11y**
 - Contraste mínimo AA (texto sobre hero: overlay oscuro `rgba(0,0,0,.45)` o tipografía sobre zona limpia).
 - Botón LIVE: `aria-label="Escuchar en vivo — programa de Martín Nocetti"`, estado `aria-pressed` al reproducir.
-- No nombrar la emisora de origen en hero/nav; disclaimer técnico al pie del player (ver `info.md`).
+- Hero/nav: solo programa + MN (sin nombre de emisora; ver política en `info.md`).
 - Menú: `button` + `aria-expanded`, foco atrapado en overlay, `Esc` cierra, retorno de foco al hamburguesa.
 - Cards: un solo enlace envolvente o título como link principal; thumbnail `alt` descriptivo o vacío si decorativo junto a título.
 - iframe Spotify: `title` descriptivo; el link “Abrir en Spotify” debe ser usable solo con teclado sin depender del iframe.
@@ -103,7 +101,11 @@ Menu hamburguesa (overlay):
 **Interacciones**
 - LIVE abre player (mini-bar inferior persistente en toda la sesión). LIVE y Spotify no compiten: vivo = adquisición en tiempo real; Spotify = archivo on-demand.
 - "Ver todas" → Visor de Notas.
-- Contactar → `/contacto` (Formspree). Sin WhatsApp.
+- Contactar → `/contacto`.
 - En franja fuera de aire: hero cambia a “Última entrevista” + CTA al bloque Spotify / “Abrir en Spotify” (no mentir “EN VIVO”).
+
+**Notas de implementación (no UI)**
+- Contacto V1 = Formspree; sin CTA de WhatsApp de contacto en la página.
+- Stream: URL técnica en env; no explicar procedencia en pantalla.
 
 ---

@@ -10,8 +10,8 @@ Home ---> Lista Notas ---> Nota
  |            +------------+
  +---> About ---> Spotify embed
  |         \
- +---> Contacto (Formspree xzepdwlp)
- |         \-- (sin WhatsApp V1)
+ +---> Contacto (formulario)
+ |
  +---> (footer) Admin Login ---> Payload Editor
                                       |
                                       +-- Preview --> Nota (?preview)

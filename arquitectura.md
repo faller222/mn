@@ -10,8 +10,8 @@ Documento de decisiones técnicas del proyecto digital MN.
 Construir la infraestructura de un medio digital personal alrededor de Martín Nocetti:
 
 - presencia web con identidad de marca (MN),
-- escucha en vivo (retransmisor de señal, sin brandear la radio de origen),
-- contacto comercial (formulario; sin WhatsApp en V1),
+- escucha en vivo (URL de stream; UI solo MN / programa),
+- contacto comercial (formulario Formspree en V1),
 - medición de audiencia (GA4) para vender publicidad con datos,
 - más adelante: publicación de notas/entrevistas con panel usable por Martín.
 
@@ -28,9 +28,9 @@ La web no es el producto final. El activo es **audiencia propia + métricas**. L
 3. **Martín debe poder publicar solo.** Si el panel requiere al desarrollador, el stack falló.
 4. **SEO y velocidad importan.** Es un medio, no una SPA de app interna.
 5. **Analytics web desde V1.** Sin datos, la plataforma no mejora la venta publicitaria.
-6. **Reusar infraestructura de señal** (URL de stream existente) sin promocionar la marca de la radio de origen. Spotify e Instagram sí son canales propios a potenciar.
+6. **Reusar infraestructura de señal** (URL de stream existente). En UI: solo MN / programa; sin nombre ni links a la emisora de origen. Spotify e Instagram sí son canales propios a potenciar.
 7. **Evitar tool-loyalty.** No elegir Firebase (u otra cosa) solo porque “ya lo usamos en otros proyectos”.
-8. **La web es marca MN / Nocetti**, no landing de la emisora. El retransmisor es utilidad temporal con disclaimer.
+8. **La web es marca MN / Nocetti**, no landing de la emisora. El stream es utilidad técnica; no explicar procedencia en pantalla.
 
 ---
 
@@ -44,13 +44,13 @@ La web no es el producto final. El activo es **audiencia propia + métricas**. L
 | CMS / backend de contenido | **Payload** | Auth admin, API, panel, CRUD de noticias |
 | Base de datos | **Supabase (Postgres)** | Persistencia de posts, users, metadata de media |
 | Imágenes | **Cloudinary** | Upload, transformaciones, CDN de fotos |
-| Contacto | **Formspree** | Formulario → email (V1). Sin WhatsApp por ahora |
+| Contacto | **Formspree** | Formulario → email (V1). Sin CTA WhatsApp de contacto |
 | Analytics | **GA4** | Visitas, eventos, reportes comerciales |
-| Audio en vivo | **Retransmisor (URL de stream)** | Botón “Escuchar en vivo” + disclaimer al pie |
+| Audio en vivo | **URL de stream** | Botón “Escuchar en vivo” (label: programa / MN) |
 
 ### Stack en una frase
 
-> Next.js en Vercel (`nocetti.uy`); backend de contenido = Payload dentro de Next; persistencia = Supabase Postgres; media = Cloudinary; contacto = Formspree; analytics = GA4; audio = retransmisor con disclaimer.
+> Next.js en Vercel (`nocetti.uy`); backend de contenido = Payload dentro de Next; persistencia = Supabase Postgres; media = Cloudinary; contacto = Formspree; analytics = GA4; audio = stream con UI MN.
 
 ---
 
@@ -72,9 +72,9 @@ Vercel
 | Panel admin | Mismo deploy (`/admin`) | No hay segundo servidor de admin |
 | Noticias (texto, fecha, status, slug) | Supabase Postgres | Las escribe Payload, no una API custom |
 | Imágenes | Cloudinary (`sswxkhoq`) | En Postgres solo URL + metadatos |
-| Contacto V1 | Formspree `xzepdwlp` | Sin WhatsApp en UI por ahora |
+| Contacto V1 | Formspree `xzepdwlp` | Sin CTA WhatsApp de contacto en `/contacto` |
 | Métricas | GA4 `G-RHQPTDD0RN` | Cuenta técnica: faller222 |
-| Audio en vivo | Retransmisor `https://fmbrava-2.nty.uy` | No brandear emisora en UI; disclaimer al pie |
+| Audio en vivo | Stream `https://fmbrava-2.nty.uy` | Solo técnico; UI = MN / programa |
 | Usuarios del admin | Postgres (vía Payload) | 1–2 usuarios (Martín + admin técnico) |
 
 ### Backend: ¿hay uno aparte?
@@ -96,15 +96,15 @@ Formspree cubre el formulario sin BFF propio en V1.
 Incluye:
 
 - Landing MN (marca, bio, CTAs).
-- Play del retransmisor (señal externa) **sin nombrar la emisora** en hero/nav; disclaimer al pie.
+- Play del stream **sin nombrar la emisora** en hero/nav/footer; sin texto de procedencia en UI.
 - Links a Spotify / Instagram (X con cuidado; preferir link sobre iframe frágil).
-- Formulario de contacto (Formspree). **Sin botón WhatsApp** por ahora.
+- Formulario de contacto (Formspree). Sin CTA WhatsApp de contacto.
 - GA4 + eventos mínimos (`play_radio`, `contact_submit`, `click_spotify`, etc.).
 - SEO básico, dominio `nocetti.uy`, hosting.
 
 **Fuera de V1:**
 
-- WhatsApp en UI.
+- CTA / número de WhatsApp en contacto (compartir nota por WhatsApp sí puede existir en V2 notas).
 - Auth de publicación.
 - Panel CMS.
 - CRUD de noticias.
@@ -147,7 +147,7 @@ Horario del player (“mostrar En vivo solo en franja del programa”) = mejora 
 | **Cloudinary para imágenes** | Upload desde el admin, transformaciones (thumb/webp), CDN. Evita guardar binarios en la DB. |
 | **Formspree para contacto V1** | Cero backend propio para un form. Suficiente hasta que exista volumen o CRM. |
 | **GA4 desde el día uno** | El negocio necesita métricas vendibles (visitas, origen, plays, clics). Firestore/DB analytics no reemplazan audiencia web. |
-| **Retransmitir señal existente (sin brandear la radio)** | Ya hay URL de stream. Construir radio propia ahora es ego técnico. La UI vende MN, no la emisora; disclaimer al pie cubre la procedencia técnica. |
+| **Usar URL de stream existente (UI solo MN)** | Ya hay URL de stream. Construir radio propia ahora es ego técnico. La UI vende MN, no la emisora; no hace falta narrar la procedencia en pantalla. |
 | **V1 ReadOnly antes del CMS** | Primero presencia + medición + hábito. El CMS solo tiene sentido con ritmo real de publicación. |
 | **Modelo editorial chico** | El diferencial son entrevistas/historias/identidad, no competir por volumen de portal genérico. |
 
@@ -167,8 +167,8 @@ Horario del player (“mostrar En vivo solo en franja del programa”) = mejora 
 | **Señal de radio / streaming propio ahora** | Sin audiencia digital consolidada, es costo e infraestructura prematura. |
 | **Portal genérico de noticias a gran escala** | Mala guerra de volumen; diluye la marca personal y atrasa el MVP. |
 | **Depender solo de “analytics de base de datos”** | No responden “quién visitó, de dónde, qué playeó”. Eso es GA4 (y eventos). |
-| **Brandear la emisora de origen en la web MN** | Objetivo: audiencia propia. El retransmisor es puente técnico, no marketing cruzado hacia la radio. |
-| **WhatsApp público en V1** | Decisión de producto: contacto solo por formulario (Formspree) por ahora. |
+| **Brandear la emisora de origen en la web MN** | Objetivo: audiencia propia. El stream es puente técnico, no marketing cruzado hacia la radio. |
+| **WhatsApp de contacto en V1** | Contacto solo por formulario (Formspree). Share de artículos por WhatsApp es otro caso. |
 
 ---
 
@@ -196,7 +196,7 @@ Implementar al menos:
 - `play_radio`
 - `contact_submit`
 - `click_spotify`
-- (opcional / más adelante) `click_whatsapp` — **no en V1**
+- (opcional) `click_whatsapp` — solo si existe CTA de contacto por WhatsApp (no V1); share de nota puede usar otro nombre de evento
 - (V2) `view_article` / `click_article`
 
 Objetivo comercial: poder decir alcance, engagement del vivo y conversiones de contacto — no solo “tengo llegada”.
@@ -208,9 +208,9 @@ Objetivo comercial: poder decir alcance, engagement del vivo y conversiones de c
 1. Martín publica, edita u oculta una nota con foto **sin ayuda del desarrollador**.
 2. Las notas públicas son indexables y compartibles (SEO + OG).
 3. GA4 muestra visitas y eventos útiles para negociación con anunciantes.
-4. El play “En vivo” funciona como CTA claro de MN (disclaimer al pie; sin CTA hacia la emisora).
+4. El play “En vivo” funciona como CTA claro de MN (sin CTA ni marca de la emisora).
 5. No existe un segundo backend ni Firebase “por las dudas”.
-6. Contacto V1 convierte por Formspree sin depender de WhatsApp.
+6. Contacto V1 convierte por Formspree.
 
 ---
 
@@ -285,8 +285,8 @@ Payload usa sobre todo `DATABASE_URL` (Postgres). La publishable key queda dispo
 | Campo | Valor |
 |---|---|
 | URL audio | `https://fmbrava-2.nty.uy` |
-| UI | Label “Escuchar en vivo” / programa — **sin nombre de emisora** |
-| Disclaimer (pie) | Ver `info.md` § stream |
+| UI | Label “Escuchar en vivo” / programa — **sin nombre de emisora ni texto de procedencia** |
+| Política copy | Ver `info.md` §1 (interna) |
 
 Env sugerido:
 
@@ -306,9 +306,9 @@ NEXT_PUBLIC_FORMSPREE_ENDPOINT=https://formspree.io/f/xzepdwlp
 | ¿Dónde se guardan las noticias? | **Supabase Postgres** (vía Payload) |
 | ¿Dónde se guardan las imágenes? | **Cloudinary** `sswxkhoq` (URL en Postgres) |
 | ¿Hay backend aparte? | **No** — Payload dentro de Next es el backend de contenido |
-| ¿Contacto? | **Formspree** `https://formspree.io/f/xzepdwlp` (sin WhatsApp V1) |
+| ¿Contacto? | **Formspree** `https://formspree.io/f/xzepdwlp` |
 | ¿Analytics? | **GA4** `G-RHQPTDD0RN` |
-| ¿Audio en vivo? | Retransmisor + disclaimer; sin brandear emisora |
+| ¿Audio en vivo? | Stream; UI = MN / programa |
 | ¿Firebase? | **No** para este producto |
 | ¿CMS a mano? | **No** |
 | ¿Base64? | **No** |
