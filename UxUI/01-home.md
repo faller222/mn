@@ -13,7 +13,8 @@
 |  |  comenzar la manana  |  |
 |  |                      |  |
 |  | [ > ESCUCHAR EN VIVO ]| |  <- CTA primario
-|  |  FM Brava · streaming|  |
+|  |  Streaming · MN       |  |
+|  |  (disclaimer al pie)  |  |
 |  +----------------------+  |
 |                            |
 |  Hoy · Destacados          |
@@ -47,7 +48,7 @@
 | +------------------------+ |
 | | Publica con MN         | |
 | | Anunciantes · Maldonado| |
-| | [ Contactar ] [WhatsApp]| |  <- CTA comercial
+| | [ Contactar ]          | |  <- CTA comercial (sin WhatsApp V1)
 | +------------------------+ |
 |                            |
 | Instagram · About · Contacto|
@@ -66,7 +67,6 @@ Menu hamburguesa (overlay):
 |  Contacto                  |
 |  -----------------         |
 |  [ > Escuchar en vivo ]    |
-|  [ WhatsApp ]              |
 +----------------------------+
 ```
 
@@ -87,13 +87,15 @@ Menu hamburguesa (overlay):
 
 **Conversión (prioridad)**
 1. `> LIVE` / Escuchar en vivo → evento GA4 `play_radio`
-2. Contactar / WhatsApp → `click_whatsapp` / `contact_submit`
+2. Contactar → `/contacto` → `contact_submit` (Formspree `xzepdwlp`)
 3. Click en card → `click_article`
-4. Spotify → `click_spotify` (en el link fallback y, si es posible, al interactuar con el bloque). El embed no da métricas útiles para vender publicidad.
+4. Spotify → `click_spotify` (link fallback). El embed no da métricas útiles para vender publicidad.
+5. WhatsApp: **no en V1**.
 
 **A11y**
 - Contraste mínimo AA (texto sobre hero: overlay oscuro `rgba(0,0,0,.45)` o tipografía sobre zona limpia).
-- Botón LIVE: `aria-label="Escuchar en vivo — FM Brava"`, estado `aria-pressed` al reproducir.
+- Botón LIVE: `aria-label="Escuchar en vivo — programa de Martín Nocetti"`, estado `aria-pressed` al reproducir.
+- No nombrar la emisora de origen en hero/nav; disclaimer técnico al pie del player (ver `info.md`).
 - Menú: `button` + `aria-expanded`, foco atrapado en overlay, `Esc` cierra, retorno de foco al hamburguesa.
 - Cards: un solo enlace envolvente o título como link principal; thumbnail `alt` descriptivo o vacío si decorativo junto a título.
 - iframe Spotify: `title` descriptivo; el link “Abrir en Spotify” debe ser usable solo con teclado sin depender del iframe.
@@ -101,7 +103,7 @@ Menu hamburguesa (overlay):
 **Interacciones**
 - LIVE abre player (mini-bar inferior persistente en toda la sesión). LIVE y Spotify no compiten: vivo = adquisición en tiempo real; Spotify = archivo on-demand.
 - "Ver todas" → Visor de Notas.
-- Contactar → Contact Me; WhatsApp → deep link externo.
+- Contactar → `/contacto` (Formspree). Sin WhatsApp.
 - En franja fuera de aire: hero cambia a “Última entrevista” + CTA al bloque Spotify / “Abrir en Spotify” (no mentir “EN VIVO”).
 
 ---

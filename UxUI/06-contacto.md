@@ -9,9 +9,9 @@
 | y consultas.               |
 +----------------------------+
 | Directo                    |
-| Email: hola@...            |
-| WhatsApp  [Abrir chat]     |
 | Maldonado, Uruguay         |
+| Instagram @mnocetti1       |
+| (sin WhatsApp en V1)       |
 +----------------------------+
 | Escribinos                 |
 |                            |
@@ -36,7 +36,8 @@
 |                            |
 | [      Enviar mensaje     ]|
 |                            |
-| Formspree · privacidad...  |
+| Formspree xzepdwlp ·       |
+| privacidad...              |
 +----------------------------+
 
 EXITO:
@@ -45,7 +46,6 @@ EXITO:
 | Te respondemos a la        |
 | brevedad.                  |
 | [ Volver al inicio ]       |
-| [ WhatsApp ]               |
 +----------------------------+
 
 ERROR:
@@ -61,11 +61,12 @@ ERROR:
 ### Anotaciones Técnicas y de UX
 
 **Responsivo**
-- Móvil: form full width; WhatsApp arriba del form (conversión más corta).
-- Desktop: 2 columnas — contacto directo izquierda, form derecha; max-width del form ~480px.
+- Móvil: form full width (único CTA de contacto en V1).
+- Desktop: 2 columnas — datos directos izquierda, form derecha; max-width del form ~480px.
 
 **Formspree**
-- POST nativo al endpoint Formspree; honeypot anti-spam.
+- Endpoint: `https://formspree.io/f/xzepdwlp`
+- POST nativo; honeypot anti-spam.
 - Validación client-side + mensajes server-side.
 - Prefill desde query: `?asunto=Publicidad`.
 - GA4: `contact_submit` solo en éxito real (no en click).
@@ -81,7 +82,7 @@ ERROR:
 - Orden de tab lógico; botón Enviar no solo por color.
 
 **Interacciones**
-- WhatsApp paralelo al form.
+- Sin WhatsApp en V1.
 - Tras éxito, ofrecer LIVE o últimas entrevistas (retención).
 
 ---

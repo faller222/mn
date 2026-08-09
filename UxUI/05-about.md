@@ -26,8 +26,9 @@
 | actualidad / deporte.      |
 +----------------------------+
 | Trayectoria                |
-| * FM Brava — Programa...   |
+| * Programa matutino — ...  |
 | * Podcast Spotify — ...    |
+| * MN / nocetti.uy — ...    |
 | * Cobertura comunitaria... |
 +----------------------------+
 | Podcast en Spotify         |
@@ -39,7 +40,7 @@
 | [ Abrir en Spotify -> ]    |
 +----------------------------+
 | Redes                      |
-| [ Instagram ] [ WhatsApp ] |
+| [ Instagram ]              |  <- sin WhatsApp V1
 +----------------------------+
 | Archivo                    |
 | +180 entrevistas · 100h+   |
@@ -70,6 +71,6 @@
 - iframe con `title="Podcast MN en Spotify"`.
 
 **Interacciones**
-- En vivo → player; Contactar → form; Ver entrevistas → lista filtrada `Entrevistas`; Instagram/WhatsApp → outbound + tracking; Spotify → embed + deep link.
+- En vivo → player (sin brandear emisora); Contactar → form Formspree; Ver entrevistas → lista; Instagram → outbound + tracking; Spotify → embed + deep link. Sin WhatsApp V1.
 
 ---
