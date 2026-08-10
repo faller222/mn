@@ -59,6 +59,16 @@ export const InboxEmails: CollectionConfig = {
       admin: hiddenData,
     },
     {
+      name: 'isRead',
+      type: 'checkbox',
+      label: 'Leído',
+      defaultValue: false,
+      index: true,
+      admin: {
+        position: 'sidebar',
+      },
+    },
+    {
       name: 'deleted',
       type: 'checkbox',
       label: 'Eliminado',
@@ -66,7 +76,6 @@ export const InboxEmails: CollectionConfig = {
       index: true,
       admin: {
         position: 'sidebar',
-        description: 'Oculto de la bandeja (soft delete).',
       },
     },
     {

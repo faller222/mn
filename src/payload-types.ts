@@ -279,9 +279,7 @@ export interface Post {
 export interface InboxEmail {
   id: number;
   subject: string;
-  /**
-   * Oculto de la bandeja (soft delete).
-   */
+  isRead?: boolean | null;
   deleted?: boolean | null;
   from: string;
   to:
@@ -509,6 +507,7 @@ export interface PostsSelect<T extends boolean = true> {
  */
 export interface InboxEmailsSelect<T extends boolean = true> {
   subject?: T;
+  isRead?: T;
   deleted?: T;
   from?: T;
   to?: T;

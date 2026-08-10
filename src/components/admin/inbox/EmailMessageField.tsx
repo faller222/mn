@@ -8,7 +8,6 @@ import {
   formatBytes,
   formatEmailDateLong,
 } from '@/lib/email-format'
-import { isInboxReadLocal, setInboxReadLocal } from '@/lib/inbox-read-local'
 import { sanitizeEmailHtml } from '@/lib/sanitize-email-html'
 import './inbox.css'
 
@@ -42,7 +41,9 @@ export function EmailMessageField() {
   const { setModified } = useForm()
   const [busy, setBusy] = useState(false)
   const [headersOpen, setHeadersOpen] = useState(false)
-  const [isRead, setIsRead] = useState(false)
+  const [isRead, setIsRead] = useState(() =>
+    Boolean((initialData as { isRead?: boolean } | undefined)?.isRead),
+  )
 
   const data = (initialData || {}) as Record<string, unknown>
 
@@ -59,25 +60,46 @@ export function EmailMessageField() {
   const attachments = asAttachmentList(data.attachmentsMeta)
   const safeHtml = useMemo(() => (html ? sanitizeEmailHtml(html) : ''), [html])
 
-  useEffect(() => {
-    if (!id) return
-    setInboxReadLocal(id, true)
-    setIsRead(true)
-  }, [id])
-
-  useEffect(() => {
-    if (!id) return
-    setIsRead(isInboxReadLocal(id))
-  }, [id])
-
-  const setRead = useCallback(
-    (read: boolean) => {
+  const patch = useCallback(
+    async (body: Record<string, unknown>, opts?: { silent?: boolean; okMsg?: string }) => {
       if (!id) return
-      setInboxReadLocal(id, read)
-      setIsRead(read)
+      if (!opts?.silent) setBusy(true)
+      try {
+        const res = await fetch(`/api/inbox-emails/${id}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+          credentials: 'include',
+        })
+        const json = (await res.json()) as { errors?: Array<{ message?: string }> }
+        if (!res.ok) {
+          throw new Error(json.errors?.[0]?.message || `Error ${res.status}`)
+        }
+        if (typeof body.isRead === 'boolean') setIsRead(body.isRead)
+        if (!opts?.silent && opts?.okMsg) toast.success(opts.okMsg)
+        setModified(false)
+        router.refresh()
+      } catch (err) {
+        if (!opts?.silent) {
+          toast.error(err instanceof Error ? err.message : 'No se pudo actualizar')
+        }
+      } finally {
+        if (!opts?.silent) setBusy(false)
+      }
     },
-    [id],
+    [id, router, setModified],
   )
+
+  useEffect(() => {
+    setIsRead(Boolean((initialData as { isRead?: boolean } | undefined)?.isRead))
+  }, [initialData])
+
+  useEffect(() => {
+    if (!id || isRead) return
+    void patch({ isRead: true }, { silent: true })
+    // Auto-mark read once when opening an unread email
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id])
 
   async function onDelete() {
     if (!id) return
@@ -155,7 +177,7 @@ export function EmailMessageField() {
             type="button"
             buttonStyle="secondary"
             disabled={busy || isRead}
-            onClick={() => setRead(true)}
+            onClick={() => void patch({ isRead: true }, { okMsg: 'Marcado como leído' })}
           >
             Marcar leído
           </Button>
@@ -163,7 +185,7 @@ export function EmailMessageField() {
             type="button"
             buttonStyle="secondary"
             disabled={busy || !isRead}
-            onClick={() => setRead(false)}
+            onClick={() => void patch({ isRead: false }, { okMsg: 'Marcado como no leído' })}
           >
             Marcar no leído
           </Button>
@@ -181,10 +203,7 @@ export function EmailMessageField() {
 
       <section className="email-view__body" aria-label="Contenido del email">
         {safeHtml ? (
-          <div
-            className="email-view__html"
-            dangerouslySetInnerHTML={{ __html: safeHtml }}
-          />
+          <div className="email-view__html" dangerouslySetInnerHTML={{ __html: safeHtml }} />
         ) : (
           <pre className="email-view__text">{text || 'Sin contenido.'}</pre>
         )}

@@ -4,7 +4,6 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { formatInboxWhen } from '@/lib/email-format'
-import { getInboxReadMap, setInboxReadLocal } from '@/lib/inbox-read-local'
 import './inbox.css'
 
 export type InboxRow = {
@@ -13,6 +12,7 @@ export type InboxRow = {
   from?: string | null
   to?: string[] | null
   receivedAt?: string | null
+  isRead?: boolean | null
 }
 
 function toLine(to?: string[] | null): string {
@@ -31,11 +31,6 @@ export function InboxTable({ docs, page, totalPages, totalDocs }: Props) {
   const router = useRouter()
   const synced = useRef(false)
   const [syncing, setSyncing] = useState(false)
-  const [readMap, setReadMap] = useState<Record<string, boolean>>({})
-
-  useEffect(() => {
-    setReadMap(getInboxReadMap(docs.map((d) => d.id)))
-  }, [docs])
 
   useEffect(() => {
     if (synced.current) return
@@ -59,15 +54,7 @@ export function InboxTable({ docs, page, totalPages, totalDocs }: Props) {
     }
   }, [router])
 
-  const unreadOnPage = useMemo(
-    () => docs.filter((d) => !readMap[String(d.id)]).length,
-    [docs, readMap],
-  )
-
-  function markRead(id: string | number) {
-    setInboxReadLocal(id, true)
-    setReadMap((prev) => ({ ...prev, [String(id)]: true }))
-  }
+  const unreadOnPage = useMemo(() => docs.filter((d) => !d.isRead).length, [docs])
 
   return (
     <div className="inbox">
@@ -104,10 +91,9 @@ export function InboxTable({ docs, page, totalPages, totalDocs }: Props) {
               </tr>
             ) : (
               docs.map((doc) => {
-                const id = String(doc.id)
-                const unread = !readMap[id]
+                const unread = !doc.isRead
                 return (
-                  <tr key={id} className={unread ? 'is-unread' : undefined}>
+                  <tr key={doc.id} className={unread ? 'is-unread' : undefined}>
                     <td className="inbox-table__status">
                       <span className={`inbox__dot ${unread ? 'is-on' : ''}`} aria-hidden />
                     </td>
@@ -115,7 +101,6 @@ export function InboxTable({ docs, page, totalPages, totalDocs }: Props) {
                       <Link
                         href={`/admin/collections/inbox-emails/${doc.id}`}
                         className="inbox-table__link"
-                        onClick={() => markRead(doc.id)}
                       >
                         {doc.from || '—'}
                       </Link>
@@ -124,7 +109,6 @@ export function InboxTable({ docs, page, totalPages, totalDocs }: Props) {
                       <Link
                         href={`/admin/collections/inbox-emails/${doc.id}`}
                         className="inbox-table__link"
-                        onClick={() => markRead(doc.id)}
                       >
                         {toLine(doc.to)}
                       </Link>
@@ -133,7 +117,6 @@ export function InboxTable({ docs, page, totalPages, totalDocs }: Props) {
                       <Link
                         href={`/admin/collections/inbox-emails/${doc.id}`}
                         className="inbox-table__link inbox-table__subject"
-                        onClick={() => markRead(doc.id)}
                       >
                         {doc.subject?.trim() || '(Sin asunto)'}
                       </Link>
