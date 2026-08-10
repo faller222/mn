@@ -1,4 +1,15 @@
-import type { CollectionConfig } from 'payload'
+import type { CollectionAfterChangeHook, CollectionConfig } from 'payload'
+import { revalidatePath } from 'next/cache'
+
+const revalidatePublicPosts: CollectionAfterChangeHook = ({ doc, previousDoc }) => {
+  revalidatePath('/noticias')
+  revalidatePath('/')
+  if (doc?.slug) revalidatePath(`/noticias/${doc.slug}`)
+  if (previousDoc?.slug && previousDoc.slug !== doc?.slug) {
+    revalidatePath(`/noticias/${previousDoc.slug}`)
+  }
+  return doc
+}
 
 export const Posts: CollectionConfig = {
   slug: 'posts',
@@ -15,11 +26,16 @@ export const Posts: CollectionConfig = {
     read: ({ req: { user } }) => {
       if (user) return true
       return {
-        status: {
-          equals: 'published',
-        },
+        and: [
+          { status: { equals: 'published' } },
+          { publishedAt: { exists: true } },
+          { publishedAt: { less_than_equal: new Date().toISOString() } },
+        ],
       }
     },
+  },
+  hooks: {
+    afterChange: [revalidatePublicPosts],
   },
   fields: [
     {
@@ -69,6 +85,7 @@ export const Posts: CollectionConfig = {
         date: {
           pickerAppearance: 'dayAndTime',
         },
+        description: 'Obligatoria para que la nota aparezca en el sitio.',
       },
     },
     {
@@ -84,6 +101,7 @@ export const Posts: CollectionConfig = {
       ],
       admin: {
         position: 'sidebar',
+        description: 'Solo “Publicado” se muestra en el sitio (con fecha).',
       },
     },
   ],

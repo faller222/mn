@@ -5,6 +5,8 @@ import { SpotifyEmbed } from '@/components/SpotifyEmbed'
 import { isOnAir, SPOTIFY_SHOW_URL } from '@/lib/constants'
 import { getPublishedPosts } from '@/lib/posts'
 
+export const revalidate = 60
+
 export default async function HomePage() {
   const onAir = isOnAir()
   const posts = await getPublishedPosts(3)

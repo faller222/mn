@@ -34,34 +34,45 @@ async function withTimeout<T>(promise: Promise<T>, fallback: T): Promise<T> {
   }
 }
 
+/** Public listing/detail: published + dated + not scheduled in the future. */
+function publicPostWhere() {
+  return {
+    and: [
+      { status: { equals: 'published' as const } },
+      { publishedAt: { exists: true } },
+      { publishedAt: { less_than_equal: new Date().toISOString() } },
+    ],
+  }
+}
+
+function toPublicPost(doc: Post): PublicPost {
+  const { url, alt } = mediaUrl(doc.coverImage)
+  return {
+    id: doc.id,
+    title: doc.title,
+    slug: doc.slug,
+    excerpt: doc.excerpt,
+    publishedAt: doc.publishedAt,
+    coverUrl: url,
+    coverAlt: alt,
+    body: doc.body,
+  }
+}
+
 export async function getPublishedPosts(limit = 12): Promise<PublicPost[]> {
   return withTimeout(
     (async () => {
       const payload = await getPayload({ config })
       const result = await payload.find({
         collection: 'posts',
-        where: {
-          status: { equals: 'published' },
-        },
+        where: publicPostWhere(),
         sort: '-publishedAt',
         limit,
-        // depth 2: popula coverImage + uploads/relaciones dentro del body Lexical
         depth: 2,
+        overrideAccess: false,
       })
 
-      return result.docs.map((doc) => {
-        const { url, alt } = mediaUrl(doc.coverImage)
-        return {
-          id: doc.id,
-          title: doc.title,
-          slug: doc.slug,
-          excerpt: doc.excerpt,
-          publishedAt: doc.publishedAt,
-          coverUrl: url,
-          coverAlt: alt,
-          body: doc.body,
-        }
-      })
+      return result.docs.map(toPublicPost)
     })(),
     [],
   )
@@ -74,27 +85,15 @@ export async function getPostBySlug(slug: string): Promise<PublicPost | null> {
       const result = await payload.find({
         collection: 'posts',
         where: {
-          and: [{ slug: { equals: slug } }, { status: { equals: 'published' } }],
+          and: [{ slug: { equals: slug } }, ...publicPostWhere().and],
         },
         limit: 1,
-        // depth 2: popula coverImage + uploads/relaciones dentro del body Lexical
         depth: 2,
+        overrideAccess: false,
       })
 
       const doc = result.docs[0]
-      if (!doc) return null
-
-      const { url, alt } = mediaUrl(doc.coverImage)
-      return {
-        id: doc.id,
-        title: doc.title,
-        slug: doc.slug,
-        excerpt: doc.excerpt,
-        publishedAt: doc.publishedAt,
-        coverUrl: url,
-        coverAlt: alt,
-        body: doc.body,
-      }
+      return doc ? toPublicPost(doc) : null
     })(),
     null,
   )

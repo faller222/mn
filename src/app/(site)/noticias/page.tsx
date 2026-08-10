@@ -3,6 +3,8 @@ import Link from 'next/link'
 import { PostCard } from '@/components/PostCard'
 import { getPublishedPosts } from '@/lib/posts'
 
+export const revalidate = 60
+
 export const metadata: Metadata = {
   title: 'Noticias',
   description: 'Notas y entrevistas publicadas en MN.',

@@ -8,6 +8,8 @@ import { RichText } from '@/lib/richtext'
 import { formatPostDate, getPostBySlug, getPublishedPosts } from '@/lib/posts'
 import { SITE_URL } from '@/lib/constants'
 
+export const revalidate = 60
+
 type Props = {
   params: Promise<{ slug: string }>
 }
