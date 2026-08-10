@@ -67,7 +67,7 @@ Env (nombres tal cual en `secrets`):
 - `RESEND_API_KEY` — send + receiving
 - `RESEND_WEBHOOK_SECRET` — signing secret del webhook
 
-Admin: grupo **Email → Bandeja de entrada**. Botón **Sincronizar con Resend** o `POST /api/inbox/sync` (sesión admin).
+Admin: grupo **Email → Emails** (tabla Emisor / Receptor / Asunto / Fecha). Sync automático al abrir la lista; soft delete; leído en localStorage.
 
 Webhook inbound: `POST /api/webhooks/resend` (evento `email.received`).
 
