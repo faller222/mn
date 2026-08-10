@@ -273,7 +273,7 @@ export interface Post {
   createdAt: string;
 }
 /**
- * Emails recibidos vía Resend (sincronizados por API o webhook).
+ * Bandeja de emails recibidos vía Resend.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "inbox-emails".
@@ -281,66 +281,18 @@ export interface Post {
 export interface InboxEmail {
   id: number;
   subject: string;
-  from: string;
-  to:
-    | {
-        [k: string]: unknown;
-      }
-    | unknown[]
-    | string
-    | number
-    | boolean
-    | null;
-  cc?:
-    | {
-        [k: string]: unknown;
-      }
-    | unknown[]
-    | string
-    | number
-    | boolean
-    | null;
-  bcc?:
-    | {
-        [k: string]: unknown;
-      }
-    | unknown[]
-    | string
-    | number
-    | boolean
-    | null;
-  replyTo?:
-    | {
-        [k: string]: unknown;
-      }
-    | unknown[]
-    | string
-    | number
-    | boolean
-    | null;
-  text?: string | null;
   /**
-   * Cuerpo HTML tal como lo devuelve Resend.
+   * Estado de lectura en la bandeja.
    */
+  isRead?: boolean | null;
+  from: string;
+  to: string[];
+  cc?: string[] | null;
+  bcc?: string[] | null;
+  replyTo?: string[] | null;
+  text?: string | null;
   html?: string | null;
   receivedAt: string;
-  /**
-   * ID único en Resend — usado para evitar duplicados.
-   */
-  resendId: string;
-  messageId?: string | null;
-  receivedFor?:
-    | {
-        [k: string]: unknown;
-      }
-    | unknown[]
-    | string
-    | number
-    | boolean
-    | null;
-  /**
-   * Metadata de adjuntos. Descarga vía API de Resend si hace falta.
-   */
   attachmentsMeta?:
     | {
         [k: string]: unknown;
@@ -351,9 +303,18 @@ export interface InboxEmail {
     | boolean
     | null;
   /**
+   * ID único en Resend — evita duplicados.
+   */
+  resendId: string;
+  messageId?: string | null;
+  /**
    * ID del evento webhook (dedupe de entregas).
    */
   svixId?: string | null;
+  /**
+   * Casilla real del catch-all (Received-For).
+   */
+  receivedFor?: string[] | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -519,6 +480,7 @@ export interface PostsSelect<T extends boolean = true> {
  */
 export interface InboxEmailsSelect<T extends boolean = true> {
   subject?: T;
+  isRead?: T;
   from?: T;
   to?: T;
   cc?: T;
@@ -527,11 +489,11 @@ export interface InboxEmailsSelect<T extends boolean = true> {
   text?: T;
   html?: T;
   receivedAt?: T;
+  attachmentsMeta?: T;
   resendId?: T;
   messageId?: T;
-  receivedFor?: T;
-  attachmentsMeta?: T;
   svixId?: T;
+  receivedFor?: T;
   updatedAt?: T;
   createdAt?: T;
 }

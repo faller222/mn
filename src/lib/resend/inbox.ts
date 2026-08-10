@@ -29,12 +29,14 @@ function toDocData(email: ReceivedEmail) {
     cc: email.cc || [],
     bcc: email.bcc || [],
     replyTo: email.reply_to || [],
-    subject: email.subject || '(sin asunto)',
+    subject: email.subject?.trim() || '(Sin asunto)',
     text: email.text || undefined,
     html: email.html || undefined,
     receivedAt: email.created_at,
     receivedFor: email.received_for || [],
     attachmentsMeta: attachmentMeta(email),
+    // Do not reset read state on re-sync/webhook update of existing docs —
+    // callers merge; create path gets default false from schema.
   }
 }
 

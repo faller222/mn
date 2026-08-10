@@ -1,5 +1,10 @@
 import type { CollectionConfig } from 'payload'
 
+const hiddenData = {
+  readOnly: true,
+  hidden: true,
+} as const
+
 export const InboxEmails: CollectionConfig = {
   slug: 'inbox-emails',
   labels: {
@@ -8,25 +13,55 @@ export const InboxEmails: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'subject',
-    defaultColumns: ['subject', 'from', 'receivedAt', 'updatedAt'],
+    defaultColumns: ['subject', 'from', 'to', 'receivedAt', 'isRead'],
     group: 'Email',
-    description: 'Emails recibidos vía Resend (sincronizados por API o webhook).',
+    description: 'Bandeja de emails recibidos vía Resend.',
+    disableCopyToLocale: true,
     components: {
-      beforeList: ['@/components/admin/SyncInboxButton#SyncInboxButton'],
+      views: {
+        list: {
+          Component: '@/components/admin/inbox/InboxListView#InboxListView',
+        },
+      },
+      edit: {
+        SaveButton: '@/components/admin/inbox/HiddenSaveButton#HiddenSaveButton',
+      },
     },
   },
   access: {
     read: ({ req: { user } }) => Boolean(user),
     create: () => false,
-    update: () => false,
+    update: ({ req: { user } }) => Boolean(user),
     delete: ({ req: { user } }) => Boolean(user),
   },
+  defaultSort: '-receivedAt',
   fields: [
+    {
+      name: 'emailView',
+      type: 'ui',
+      admin: {
+        components: {
+          Field: '@/components/admin/inbox/EmailMessageField#EmailMessageField',
+        },
+      },
+    },
     {
       name: 'subject',
       type: 'text',
       label: 'Asunto',
       required: true,
+      admin: hiddenData,
+    },
+    {
+      name: 'isRead',
+      type: 'checkbox',
+      label: 'Leído',
+      defaultValue: false,
+      index: true,
+      admin: {
+        position: 'sidebar',
+        description: 'Estado de lectura en la bandeja.',
+      },
     },
     {
       name: 'from',
@@ -34,45 +69,48 @@ export const InboxEmails: CollectionConfig = {
       label: 'De',
       required: true,
       index: true,
+      admin: hiddenData,
     },
     {
       name: 'to',
-      type: 'json',
+      type: 'text',
       label: 'Para',
+      hasMany: true,
       required: true,
+      admin: hiddenData,
     },
     {
       name: 'cc',
-      type: 'json',
+      type: 'text',
       label: 'CC',
-      admin: { readOnly: true },
+      hasMany: true,
+      admin: hiddenData,
     },
     {
       name: 'bcc',
-      type: 'json',
+      type: 'text',
       label: 'CCO',
-      admin: { readOnly: true },
+      hasMany: true,
+      admin: hiddenData,
     },
     {
       name: 'replyTo',
-      type: 'json',
+      type: 'text',
       label: 'Reply-To',
-      admin: { readOnly: true },
+      hasMany: true,
+      admin: hiddenData,
     },
     {
       name: 'text',
       type: 'textarea',
       label: 'Texto plano',
-      admin: { readOnly: true },
+      admin: hiddenData,
     },
     {
       name: 'html',
       type: 'textarea',
       label: 'HTML',
-      admin: {
-        readOnly: true,
-        description: 'Cuerpo HTML tal como lo devuelve Resend.',
-      },
+      admin: hiddenData,
     },
     {
       name: 'receivedAt',
@@ -82,52 +120,71 @@ export const InboxEmails: CollectionConfig = {
       admin: {
         date: { pickerAppearance: 'dayAndTime' },
         position: 'sidebar',
-      },
-    },
-    {
-      name: 'resendId',
-      type: 'text',
-      label: 'Resend ID',
-      required: true,
-      unique: true,
-      index: true,
-      admin: {
         readOnly: true,
-        position: 'sidebar',
-        description: 'ID único en Resend — usado para evitar duplicados.',
       },
-    },
-    {
-      name: 'messageId',
-      type: 'text',
-      label: 'Message-ID',
-      admin: { readOnly: true, position: 'sidebar' },
-    },
-    {
-      name: 'receivedFor',
-      type: 'json',
-      label: 'Received-For',
-      admin: { readOnly: true, position: 'sidebar' },
     },
     {
       name: 'attachmentsMeta',
       type: 'json',
       label: 'Adjuntos (metadata)',
-      admin: {
-        readOnly: true,
-        description: 'Metadata de adjuntos. Descarga vía API de Resend si hace falta.',
-      },
+      admin: hiddenData,
     },
     {
-      name: 'svixId',
-      type: 'text',
-      label: 'Svix event ID',
-      index: true,
+      type: 'collapsible',
+      label: 'Detalles técnicos',
       admin: {
-        readOnly: true,
-        position: 'sidebar',
-        description: 'ID del evento webhook (dedupe de entregas).',
+        initCollapsed: true,
+        description: 'IDs y metadata de Resend / webhook (debug y dedupe).',
       },
+      fields: [
+        {
+          name: 'resendId',
+          type: 'text',
+          label: 'Resend ID',
+          required: true,
+          unique: true,
+          index: true,
+          admin: {
+            readOnly: true,
+            description: 'ID único en Resend — evita duplicados.',
+          },
+        },
+        {
+          name: 'messageId',
+          type: 'text',
+          label: 'Message-ID',
+          admin: { readOnly: true },
+        },
+        {
+          name: 'svixId',
+          type: 'text',
+          label: 'Svix event ID',
+          index: true,
+          admin: {
+            readOnly: true,
+            description: 'ID del evento webhook (dedupe de entregas).',
+          },
+        },
+        {
+          name: 'receivedFor',
+          type: 'text',
+          label: 'Recibido para',
+          hasMany: true,
+          admin: {
+            readOnly: true,
+            description: 'Casilla real del catch-all (Received-For).',
+          },
+        },
+        {
+          name: 'attachmentsRaw',
+          type: 'ui',
+          admin: {
+            components: {
+              Field: '@/components/admin/inbox/AttachmentsRawField#AttachmentsRawField',
+            },
+          },
+        },
+      ],
     },
   ],
 }

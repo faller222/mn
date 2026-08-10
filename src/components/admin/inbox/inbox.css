@@ -1,0 +1,254 @@
+.inbox__gutter {
+  padding-block: 1.5rem 2.5rem;
+}
+
+.inbox__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.inbox__title {
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+}
+
+.inbox__meta {
+  margin: 0.35rem 0 0;
+  color: var(--theme-elevation-500);
+  font-size: 0.9rem;
+}
+
+.inbox__list {
+  border: 1px solid var(--theme-elevation-150);
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--theme-elevation-0);
+}
+
+.inbox__empty {
+  margin: 0;
+  padding: 2rem 1.25rem;
+  color: var(--theme-elevation-500);
+}
+
+.inbox__row {
+  display: grid;
+  grid-template-columns: 1rem 1fr;
+  gap: 0.75rem;
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid var(--theme-elevation-100);
+  text-decoration: none;
+  color: inherit;
+  transition: background 0.12s ease;
+}
+
+.inbox__row:last-child {
+  border-bottom: 0;
+}
+
+.inbox__row:hover {
+  background: var(--theme-elevation-50);
+}
+
+.inbox__row.is-unread .inbox__from,
+.inbox__row.is-unread .inbox__subject {
+  font-weight: 700;
+}
+
+.inbox__dot {
+  width: 0.55rem;
+  height: 0.55rem;
+  margin-top: 0.45rem;
+  border-radius: 999px;
+  background: transparent;
+}
+
+.inbox__row.is-unread .inbox__dot {
+  background: var(--theme-success-500, #3d9970);
+}
+
+.inbox__main {
+  min-width: 0;
+  display: grid;
+  gap: 0.2rem;
+}
+
+.inbox__line1,
+.inbox__line2 {
+  display: grid;
+  grid-template-columns: minmax(7rem, 11rem) 1fr auto;
+  gap: 0.75rem;
+  align-items: baseline;
+}
+
+.inbox__from,
+.inbox__subject,
+.inbox__preview,
+.inbox__domain {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.inbox__subject {
+  font-size: 0.98rem;
+}
+
+.inbox__when,
+.inbox__domain,
+.inbox__preview {
+  color: var(--theme-elevation-500);
+  font-size: 0.86rem;
+}
+
+.inbox__pager {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+
+.email-view {
+  display: grid;
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.email-view__subject {
+  margin: 0 0 1rem;
+  font-size: 1.7rem;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.email-view__meta {
+  display: grid;
+  gap: 0.45rem;
+  margin: 0;
+}
+
+.email-view__meta > div {
+  display: grid;
+  grid-template-columns: 5rem 1fr;
+  gap: 0.75rem;
+}
+
+.email-view__meta dt {
+  color: var(--theme-elevation-500);
+  font-size: 0.85rem;
+}
+
+.email-view__meta dd {
+  margin: 0;
+  word-break: break-word;
+}
+
+.email-view__more {
+  margin-top: 0.75rem;
+}
+
+.email-view__more summary {
+  cursor: pointer;
+  color: var(--theme-elevation-500);
+  font-size: 0.9rem;
+}
+
+.email-view__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.email-view__body {
+  border: 1px solid var(--theme-elevation-150);
+  border-radius: 10px;
+  background: var(--theme-elevation-0);
+  overflow: auto;
+}
+
+.email-view__html {
+  padding: 1.25rem;
+  max-width: 100%;
+  overflow-x: auto;
+  line-height: 1.5;
+}
+
+.email-view__html img {
+  max-width: 100%;
+  height: auto;
+}
+
+.email-view__html a {
+  color: var(--theme-success-600, #2f7d57);
+}
+
+.email-view__text {
+  margin: 0;
+  padding: 1.25rem;
+  white-space: pre-wrap;
+  font-family: inherit;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.email-view__attachments h2 {
+  margin: 0 0 0.6rem;
+  font-size: 1rem;
+}
+
+.email-view__attachments ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.email-view__attachments li a,
+.email-view__attachments li > span {
+  display: flex;
+  gap: 0.65rem;
+  align-items: flex-start;
+  padding: 0.75rem 0.9rem;
+  border: 1px solid var(--theme-elevation-150);
+  border-radius: 8px;
+  text-decoration: none;
+  color: inherit;
+  background: var(--theme-elevation-50);
+}
+
+.email-view__attachments strong {
+  display: block;
+}
+
+.email-view__attachments small {
+  color: var(--theme-elevation-500);
+}
+
+.email-view__attach-icon {
+  font-size: 1.1rem;
+  line-height: 1.2;
+}
+
+@media (max-width: 768px) {
+  .inbox__line1,
+  .inbox__line2 {
+    grid-template-columns: 1fr auto;
+  }
+
+  .inbox__domain {
+    display: none;
+  }
+
+  .inbox__preview {
+    grid-column: 1 / -1;
+  }
+}

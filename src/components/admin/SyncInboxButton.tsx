@@ -37,10 +37,8 @@ export function SyncInboxButton() {
   }
 
   return (
-    <div style={{ marginBottom: '1rem' }}>
-      <Button type="button" onClick={() => void onSync()} disabled={loading}>
-        {loading ? 'Sincronizando…' : 'Sincronizar con Resend'}
-      </Button>
-    </div>
+    <Button type="button" onClick={() => void onSync()} disabled={loading}>
+      {loading ? 'Sincronizando…' : 'Sincronizar con Resend'}
+    </Button>
   )
 }

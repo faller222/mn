@@ -21,7 +21,10 @@ import { StrikethroughFeatureClient as StrikethroughFeatureClient_e70f5e05f09f93
 import { UnderlineFeatureClient as UnderlineFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { BoldFeatureClient as BoldFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { ItalicFeatureClient as ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
-import { SyncInboxButton as SyncInboxButton_c266810c592f18165876ebe03d653108 } from '@/components/admin/SyncInboxButton'
+import { EmailMessageField as EmailMessageField_4deaf8a6629efa4e0187c735dca781d5 } from '@/components/admin/inbox/EmailMessageField'
+import { AttachmentsRawField as AttachmentsRawField_355287542e753c81cb1dc5ef2251bbb5 } from '@/components/admin/inbox/AttachmentsRawField'
+import { HiddenSaveButton as HiddenSaveButton_990c537d09514362d15984bfdb7756f6 } from '@/components/admin/inbox/HiddenSaveButton'
+import { InboxListView as InboxListView_37202598a5d324147f9dfc9e883d7084 } from '@/components/admin/inbox/InboxListView'
 import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
 
 /** @type import('payload').ImportMap */
@@ -49,6 +52,9 @@ export const importMap = {
   "@payloadcms/richtext-lexical/client#UnderlineFeatureClient": UnderlineFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#BoldFeatureClient": BoldFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#ItalicFeatureClient": ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
-  "@/components/admin/SyncInboxButton#SyncInboxButton": SyncInboxButton_c266810c592f18165876ebe03d653108,
+  "@/components/admin/inbox/EmailMessageField#EmailMessageField": EmailMessageField_4deaf8a6629efa4e0187c735dca781d5,
+  "@/components/admin/inbox/AttachmentsRawField#AttachmentsRawField": AttachmentsRawField_355287542e753c81cb1dc5ef2251bbb5,
+  "@/components/admin/inbox/HiddenSaveButton#HiddenSaveButton": HiddenSaveButton_990c537d09514362d15984bfdb7756f6,
+  "@/components/admin/inbox/InboxListView#InboxListView": InboxListView_37202598a5d324147f9dfc9e883d7084,
   "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1
 }
