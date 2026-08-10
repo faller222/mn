@@ -4,9 +4,10 @@ import { getPayload } from 'payload'
 import config from '@payload-config'
 import type { Media, Post } from '@/payload-types'
 import type { PublicPost } from '@/lib/post-types'
+import { publicPostWhere } from '@/lib/post-types'
 
 export type { PublicPost } from '@/lib/post-types'
-export { formatPostDate } from '@/lib/post-types'
+export { formatPostDate, publicPostWhere } from '@/lib/post-types'
 
 function mediaUrl(cover: Post['coverImage']): { url?: string | null; alt?: string | null } {
   if (!cover || typeof cover === 'string' || typeof cover === 'number') {
@@ -31,17 +32,6 @@ async function withTimeout<T>(promise: Promise<T>, fallback: T): Promise<T> {
     return fallback
   } finally {
     if (timer) clearTimeout(timer)
-  }
-}
-
-/** Public listing/detail: published + dated + not scheduled in the future. */
-function publicPostWhere() {
-  return {
-    and: [
-      { status: { equals: 'published' as const } },
-      { publishedAt: { exists: true } },
-      { publishedAt: { less_than_equal: new Date().toISOString() } },
-    ],
   }
 }
 
@@ -85,7 +75,7 @@ export async function getPostBySlug(slug: string): Promise<PublicPost | null> {
       const result = await payload.find({
         collection: 'posts',
         where: {
-          and: [{ slug: { equals: slug } }, ...publicPostWhere().and],
+          and: [{ slug: { equals: slug } }, publicPostWhere()],
         },
         limit: 1,
         depth: 2,

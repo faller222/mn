@@ -1,5 +1,6 @@
 import type { CollectionAfterChangeHook, CollectionConfig } from 'payload'
 import { revalidatePath } from 'next/cache'
+import { publicPostWhere } from '@/lib/post-types'
 
 const revalidatePublicPosts: CollectionAfterChangeHook = ({ doc, previousDoc }) => {
   revalidatePath('/noticias')
@@ -25,13 +26,7 @@ export const Posts: CollectionConfig = {
   access: {
     read: ({ req: { user } }) => {
       if (user) return true
-      return {
-        and: [
-          { status: { equals: 'published' } },
-          { publishedAt: { exists: true } },
-          { publishedAt: { less_than_equal: new Date().toISOString() } },
-        ],
-      }
+      return publicPostWhere()
     },
   },
   hooks: {
