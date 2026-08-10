@@ -22,11 +22,15 @@ type InboxDoc = {
 }
 
 export function InboxListView(props: ListViewServerProps) {
-  const docs = ((props.data as { docs?: InboxDoc[] } | undefined)?.docs || []) as InboxDoc[]
-  const page = Number((props.data as { page?: number })?.page || 1)
-  const totalPages = Number((props.data as { totalPages?: number })?.totalPages || 1)
-  const totalDocs = Number((props.data as { totalDocs?: number })?.totalDocs || docs.length)
+  const data = props.data as
+    | { docs?: InboxDoc[]; page?: number; totalPages?: number; totalDocs?: number }
+    | undefined
+  const docs = (data?.docs || []) as InboxDoc[]
+  const page = Number(data?.page || 1)
+  const totalPages = Number(data?.totalPages || 1)
+  const totalDocs = Number(data?.totalDocs || docs.length)
   const unread = docs.filter((d) => !d.isRead).length
+  const loadFailed = !data
 
   return (
     <div className="inbox">
@@ -35,17 +39,28 @@ export function InboxListView(props: ListViewServerProps) {
           <div>
             <h1 className="inbox__title">Bandeja de entrada</h1>
             <p className="inbox__meta">
-              {totalDocs} correo{totalDocs === 1 ? '' : 's'}
-              {unread > 0 ? ` · ${unread} sin leer en esta página` : ''}
+              {loadFailed
+                ? 'No se pudo cargar la lista'
+                : `${totalDocs} correo${totalDocs === 1 ? '' : 's'}${
+                    unread > 0 ? ` · ${unread} sin leer en esta página` : ''
+                  }`}
             </p>
           </div>
           <SyncInboxButton />
         </header>
 
+        {loadFailed ? (
+          <p className="inbox__empty">
+            Error al cargar emails. Revisá el schema de la base (columnas/tablas de inbox) y
+            volvé a sincronizar.
+          </p>
+        ) : null}
+
         <div className="inbox__list" role="list">
-          {docs.length === 0 ? (
+          {!loadFailed && docs.length === 0 ? (
             <p className="inbox__empty">No hay emails. Sincronizá con Resend o esperá el webhook.</p>
-          ) : (
+          ) : null}
+          {!loadFailed && docs.length > 0 ? (
             docs.map((doc) => {
               const href = `/admin/collections/inbox-emails/${doc.id}`
               const unreadDot = !doc.isRead
@@ -77,7 +92,7 @@ export function InboxListView(props: ListViewServerProps) {
                 </Link>
               )
             })
-          )}
+          ) : null}
         </div>
 
         {totalPages > 1 ? (

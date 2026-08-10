@@ -71,33 +71,30 @@ export const InboxEmails: CollectionConfig = {
       index: true,
       admin: hiddenData,
     },
+    // JSON arrays — avoid Payload hasMany join tables (inbox_emails_texts) that may not exist in prod.
     {
       name: 'to',
-      type: 'text',
+      type: 'json',
       label: 'Para',
-      hasMany: true,
       required: true,
       admin: hiddenData,
     },
     {
       name: 'cc',
-      type: 'text',
+      type: 'json',
       label: 'CC',
-      hasMany: true,
       admin: hiddenData,
     },
     {
       name: 'bcc',
-      type: 'text',
+      type: 'json',
       label: 'CCO',
-      hasMany: true,
       admin: hiddenData,
     },
     {
       name: 'replyTo',
-      type: 'text',
+      type: 'json',
       label: 'Reply-To',
-      hasMany: true,
       admin: hiddenData,
     },
     {
@@ -167,9 +164,8 @@ export const InboxEmails: CollectionConfig = {
         },
         {
           name: 'receivedFor',
-          type: 'text',
+          type: 'json',
           label: 'Recibido para',
-          hasMany: true,
           admin: {
             readOnly: true,
             description: 'Casilla real del catch-all (Received-For).',

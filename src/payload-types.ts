@@ -286,10 +286,42 @@ export interface InboxEmail {
    */
   isRead?: boolean | null;
   from: string;
-  to: string[];
-  cc?: string[] | null;
-  bcc?: string[] | null;
-  replyTo?: string[] | null;
+  to:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  cc?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  bcc?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  replyTo?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
   text?: string | null;
   html?: string | null;
   receivedAt: string;
@@ -314,7 +346,15 @@ export interface InboxEmail {
   /**
    * Casilla real del catch-all (Received-For).
    */
-  receivedFor?: string[] | null;
+  receivedFor?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
   updatedAt: string;
   createdAt: string;
 }
