@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { LiveButton } from '@/components/LiveButton'
 import { PostCard } from '@/components/PostCard'
 import { SpotifyEmbed } from '@/components/SpotifyEmbed'
-import { isOnAir } from '@/lib/constants'
+import { isOnAir, SPOTIFY_SHOW_URL } from '@/lib/constants'
 import { getPublishedPosts } from '@/lib/posts'
 
 export default async function HomePage() {
@@ -32,7 +32,14 @@ export default async function HomePage() {
                 emisiones en Spotify.
               </p>
               <div className="hero__actions">
-                <LiveButton label="Escuchar en vivo" className="btn btn--ghost" />
+                <a
+                  className="btn btn--ghost"
+                  href={SPOTIFY_SHOW_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Abrir en Spotify
+                </a>
                 <a className="btn btn--primary" href="#podcast">
                   Ver entrevistas
                 </a>

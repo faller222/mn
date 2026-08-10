@@ -3,12 +3,12 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useId, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { SPOTIFY_SHOW_URL } from '@/lib/constants'
 import { usePlayer } from './PlayerProvider'
 
 const NAV = [
   { href: '/', label: 'Inicio' },
-  { href: '/#en-vivo', label: 'En vivo' },
   { href: '/noticias', label: 'Noticias' },
   { href: '/sobre', label: 'Sobre Martín' },
   { href: '/contacto', label: 'Contacto' },
@@ -17,7 +17,12 @@ const NAV = [
 export function Header() {
   const { playing, onAir, toggle } = usePlayer()
   const [open, setOpen] = useState(false)
+  const [mounted, setMounted] = useState(false)
   const menuId = useId()
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   useEffect(() => {
     if (!open) return
@@ -32,92 +37,75 @@ export function Header() {
     }
   }, [open])
 
+  const overlay =
+    open && mounted
+      ? createPortal(
+          <div className="nav-overlay" id={menuId} role="dialog" aria-modal="true">
+            <nav aria-label="Móvil">
+              {NAV.map((item) => (
+                <Link key={item.href} href={item.href} onClick={() => setOpen(false)}>
+                  {item.label}
+                </Link>
+              ))}
+            </nav>
+          </div>,
+          document.body,
+        )
+      : null
+
   return (
-    <header className="site-header">
-      <div className="site-header__inner">
-        <Link href="/" className="brand" aria-label="Martín Nocetti — inicio">
-          <Image src="/brand/logo.png" alt="MN" width={44} height={44} priority />
-          <span className="brand__text">Martín Nocetti</span>
-        </Link>
+    <>
+      <header className="site-header">
+        <div className="site-header__inner">
+          <Link href="/" className="brand" aria-label="Martín Nocetti — inicio">
+            <Image src="/brand/logo.png" alt="MN" width={44} height={44} priority />
+            <span className="brand__text">Martín Nocetti</span>
+          </Link>
 
-        <nav className="nav-desktop" aria-label="Principal">
-          {NAV.map((item) => (
-            <Link key={item.href} href={item.href}>
-              {item.label}
-            </Link>
-          ))}
-        </nav>
-
-        <div className="header-actions">
-          {onAir ? (
-            <button
-              type="button"
-              className={`live-btn ${playing ? 'is-live' : ''}`}
-              onClick={toggle}
-              aria-pressed={playing}
-              aria-label="Escuchar en vivo — programa de Martín Nocetti"
-            >
-              {playing ? '● EN VIVO' : '> LIVE'}
-            </button>
-          ) : (
-            <a
-              className="live-btn"
-              href={SPOTIFY_SHOW_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Abrir archivo en Spotify"
-            >
-              Spotify
-            </a>
-          )}
-
-          <button
-            type="button"
-            className="menu-toggle"
-            aria-expanded={open}
-            aria-controls={menuId}
-            onClick={() => setOpen((v) => !v)}
-          >
-            {open ? 'Cerrar' : 'Menú'}
-          </button>
-        </div>
-      </div>
-
-      {open ? (
-        <div className="nav-overlay" id={menuId} role="dialog" aria-modal="true">
-          <nav aria-label="Móvil">
+          <nav className="nav-desktop" aria-label="Principal">
             {NAV.map((item) => (
-              <Link key={item.href} href={item.href} onClick={() => setOpen(false)}>
+              <Link key={item.href} href={item.href}>
                 {item.label}
               </Link>
             ))}
+          </nav>
+
+          <div className="header-actions">
             {onAir ? (
               <button
                 type="button"
-                className="live-btn live-btn--block"
-                onClick={() => {
-                  toggle()
-                  setOpen(false)
-                }}
+                className={`live-btn ${playing ? 'is-live' : ''}`}
+                onClick={toggle}
                 aria-pressed={playing}
                 aria-label="Escuchar en vivo — programa de Martín Nocetti"
               >
-                {playing ? 'Pausar en vivo' : 'Escuchar en vivo'}
+                {playing ? '● EN VIVO' : '> LIVE'}
               </button>
             ) : (
               <a
-                className="live-btn live-btn--block"
+                className="live-btn"
                 href={SPOTIFY_SHOW_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                onClick={() => setOpen(false)}
+                aria-label="Abrir archivo en Spotify"
               >
-                Abrir en Spotify
+                Spotify
               </a>
             )}
-          </nav>
+
+            <button
+              type="button"
+              className="menu-toggle"
+              aria-expanded={open}
+              aria-controls={menuId}
+              onClick={() => setOpen((v) => !v)}
+            >
+              {open ? 'Cerrar' : 'Menú'}
+            </button>
+          </div>
         </div>
-      ) : null}
-    </header>
+      </header>
+      {overlay}
+    </>
   )
 }

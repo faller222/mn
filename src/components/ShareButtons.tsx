@@ -148,8 +148,20 @@ function ThreadsIcon() {
 
 function ShareIcon() {
   return (
-    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="currentColor">
-      <path d="M18 8a3 3 0 1 0-2.97-3.35L8.7 8.06a3 3 0 1 0 0 7.88l6.33 3.41A3 3 0 1 0 16.4 17.7l-6.33-3.41a3.05 3.05 0 0 0 0-1.58l6.33-3.41A3 3 0 0 0 18 8z" />
+    <svg
+      viewBox="0 0 24 24"
+      width="20"
+      height="20"
+      aria-hidden="true"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7" />
+      <path d="M12 3v12" />
+      <path d="m8 7 4-4 4 4" />
     </svg>
   )
 }
