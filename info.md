@@ -135,14 +135,35 @@ Credenciales técnicas (GA4, Cloudinary, Supabase): ver `arquitectura.md` §11.
 
 Usar como “han pasado por su micrófono”, no como endosos:
 
-- Leticia Correa — Alcaldesa del Municipio de Maldonado  
-- Osvaldo Matteu — Presidente de la Junta Departamental de Maldonado  
-- Eduardo Antonini — Senador de la República  
-- Fernando Perdomo — Edil (Partido Nacional)  
-- Fernando Borges — Edil (Frente Amplio)  
-- Rosmari González — Edila (Frente Amplio)  
-- Verónica González — Directora Departamental de INAU  
-- Cultura / homenajes: José Hualde; Virginia Ferreti; Marita Cirilo (Teatro de la Mancha)
+- Ministro José Carlos Mahia — Ministro de Estado / Político y legislador
+- Oscar De los Santos — Exintendente de Maldonado y exlegislador
+- Rodrigo Blas — Senador de la República
+- Dr. Darío Pérez — Médico y referente político histórico de Maldonado
+- Joaquín Garlo — Diputado nacional
+- Marita Araujo — Diputada nacional
+- Dr. Álvaro Villegas — Secretario General de la IDM
+- Miguel Abella — Intendente de Maldonado
+- José "Pepe" Rapetti — Escribano, histórico dirigente político y exintendente interino
+- Andrés Rapetti — Director de Cultura de la IDM
+- José Martín Hualde — Prosecretario de la IDM
+- Juan Pígola — Director de Movilidad de la IDM
+- Fernando Álvez — Director de Deportes de la IDM
+- Verónica Robaina — Presidenta de la JDM
+- Silvana Amoroso — Presidenta del Frente Amplio en Maldonado
+- Damián Tort — Alcalde de Maldonado
+- Javier Carballal — Alcalde de Punta del Este
+- Dr. Pablo Chalar — Edil (Partido Nacional)
+- Eduardo Elinger — Edil (Partido Colorado)
+- Juan Urdangaray — Edil (Frente Amplio)
+- Luis Artola — Edil (Partido Nacional)
+- Javier Ramírez — Edil (Frente Amplio)
+- Matheo Caraptsias — Edil (Partido Nacional)
+- Gabriel Cedrés — Exfutbolista profesional
+- Damián Macaluso — Exfutbolista profesional
+- Pablo Aníbal De León — Director técnico de fútbol
+- Sebastián Barrios — Gestor cultural
+- Ignacio Zuloaga — Artista plástico (La Barra / Punta del Este)
+- Toto Núñez Pallas — Delantero de fútbol profesional
 
 ### 5.6 Primera persona — newsletter / columna
 

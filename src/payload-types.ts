@@ -273,8 +273,6 @@ export interface Post {
   createdAt: string;
 }
 /**
- * Bandeja de emails recibidos vía Resend.
- *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "inbox-emails".
  */
@@ -282,9 +280,9 @@ export interface InboxEmail {
   id: number;
   subject: string;
   /**
-   * Estado de lectura en la bandeja.
+   * Oculto de la bandeja (soft delete).
    */
-  isRead?: boolean | null;
+  deleted?: boolean | null;
   from: string;
   to:
     | {
@@ -334,18 +332,9 @@ export interface InboxEmail {
     | number
     | boolean
     | null;
-  /**
-   * ID único en Resend — evita duplicados.
-   */
   resendId: string;
   messageId?: string | null;
-  /**
-   * ID del evento webhook (dedupe de entregas).
-   */
   svixId?: string | null;
-  /**
-   * Casilla real del catch-all (Received-For).
-   */
   receivedFor?:
     | {
         [k: string]: unknown;
@@ -520,7 +509,7 @@ export interface PostsSelect<T extends boolean = true> {
  */
 export interface InboxEmailsSelect<T extends boolean = true> {
   subject?: T;
-  isRead?: T;
+  deleted?: T;
   from?: T;
   to?: T;
   cc?: T;

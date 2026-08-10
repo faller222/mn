@@ -8,6 +8,7 @@ import {
   formatBytes,
   formatEmailDateLong,
 } from '@/lib/email-format'
+import { isInboxReadLocal, setInboxReadLocal } from '@/lib/inbox-read-local'
 import { sanitizeEmailHtml } from '@/lib/sanitize-email-html'
 import './inbox.css'
 
@@ -41,9 +42,8 @@ export function EmailMessageField() {
   const { setModified } = useForm()
   const [busy, setBusy] = useState(false)
   const [headersOpen, setHeadersOpen] = useState(false)
-  const [isRead, setIsRead] = useState(() => Boolean((initialData as { isRead?: boolean } | undefined)?.isRead))
+  const [isRead, setIsRead] = useState(false)
 
-  // Prefer document payload (hidden fields may be omitted from the form state).
   const data = (initialData || {}) as Record<string, unknown>
 
   const subject = String(data.subject || '').trim() || '(Sin asunto)'
@@ -59,58 +59,41 @@ export function EmailMessageField() {
   const attachments = asAttachmentList(data.attachmentsMeta)
   const safeHtml = useMemo(() => (html ? sanitizeEmailHtml(html) : ''), [html])
 
-  const patch = useCallback(
-    async (body: Record<string, unknown>, opts?: { silent?: boolean; okMsg?: string }) => {
-      if (!id) return
-      if (!opts?.silent) setBusy(true)
-      try {
-        const res = await fetch(`/api/inbox-emails/${id}`, {
-          method: 'PATCH',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(body),
-          credentials: 'include',
-        })
-        const json = (await res.json()) as { errors?: Array<{ message?: string }> }
-        if (!res.ok) {
-          throw new Error(json.errors?.[0]?.message || `Error ${res.status}`)
-        }
-        if (typeof body.isRead === 'boolean') setIsRead(body.isRead)
-        if (!opts?.silent && opts?.okMsg) toast.success(opts.okMsg)
-        setModified(false)
-        router.refresh()
-      } catch (err) {
-        if (!opts?.silent) {
-          toast.error(err instanceof Error ? err.message : 'No se pudo actualizar')
-        }
-      } finally {
-        if (!opts?.silent) setBusy(false)
-      }
-    },
-    [id, router, setModified],
-  )
-
   useEffect(() => {
-    setIsRead(Boolean((initialData as { isRead?: boolean } | undefined)?.isRead))
-  }, [initialData])
-
-  useEffect(() => {
-    if (!id || isRead) return
-    void patch({ isRead: true }, { silent: true })
-    // Auto-mark once when opening an unread email
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    if (!id) return
+    setInboxReadLocal(id, true)
+    setIsRead(true)
   }, [id])
+
+  useEffect(() => {
+    if (!id) return
+    setIsRead(isInboxReadLocal(id))
+  }, [id])
+
+  const setRead = useCallback(
+    (read: boolean) => {
+      if (!id) return
+      setInboxReadLocal(id, read)
+      setIsRead(read)
+    },
+    [id],
+  )
 
   async function onDelete() {
     if (!id) return
-    if (!window.confirm('¿Eliminar este email de la bandeja?')) return
+    if (!window.confirm('¿Quitar este email de la bandeja?')) return
     setBusy(true)
     try {
       const res = await fetch(`/api/inbox-emails/${id}`, {
-        method: 'DELETE',
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ deleted: true }),
         credentials: 'include',
       })
-      if (!res.ok) throw new Error(`Error ${res.status}`)
-      toast.success('Email eliminado')
+      const json = (await res.json()) as { errors?: Array<{ message?: string }> }
+      if (!res.ok) throw new Error(json.errors?.[0]?.message || `Error ${res.status}`)
+      setModified(false)
+      toast.success('Email quitado de la bandeja')
       router.push('/admin/collections/inbox-emails')
     } catch (err) {
       toast.error(err instanceof Error ? err.message : 'No se pudo eliminar')
@@ -137,9 +120,13 @@ export function EmailMessageField() {
           </div>
         </dl>
 
-        {(cc.length || bcc.length || replyTo.length) ? (
-          <details className="email-view__more" open={headersOpen} onToggle={(e) => setHeadersOpen((e.target as HTMLDetailsElement).open)}>
-            <summary>CC / CCO / Reply-To</summary>
+        {cc.length || bcc.length || replyTo.length ? (
+          <details
+            className="email-view__more"
+            open={headersOpen}
+            onToggle={(e) => setHeadersOpen((e.target as HTMLDetailsElement).open)}
+          >
+            <summary>Más destinatarios</summary>
             <dl className="email-view__meta">
               {cc.length ? (
                 <div>
@@ -167,23 +154,23 @@ export function EmailMessageField() {
           <Button
             type="button"
             buttonStyle="secondary"
-            disabled={busy}
-            onClick={() => void patch({ isRead: true }, { okMsg: 'Marcado como leído' })}
+            disabled={busy || isRead}
+            onClick={() => setRead(true)}
           >
             Marcar leído
           </Button>
           <Button
             type="button"
             buttonStyle="secondary"
-            disabled={busy}
-            onClick={() => void patch({ isRead: false }, { okMsg: 'Marcado como no leído' })}
+            disabled={busy || !isRead}
+            onClick={() => setRead(false)}
           >
             Marcar no leído
           </Button>
-          <Button type="button" buttonStyle="secondary" disabled aria-label="Responder (próximamente)">
+          <Button type="button" buttonStyle="secondary" disabled aria-label="Responder">
             Responder
           </Button>
-          <Button type="button" buttonStyle="secondary" disabled aria-label="Reenviar (próximamente)">
+          <Button type="button" buttonStyle="secondary" disabled aria-label="Reenviar">
             Reenviar
           </Button>
           <Button type="button" buttonStyle="pill" disabled={busy} onClick={() => void onDelete()}>
@@ -196,11 +183,10 @@ export function EmailMessageField() {
         {safeHtml ? (
           <div
             className="email-view__html"
-            // Sanitized with DOMPurify — required to render inbound HTML safely.
             dangerouslySetInnerHTML={{ __html: safeHtml }}
           />
         ) : (
-          <pre className="email-view__text">{text || 'Este email no tiene contenido.'}</pre>
+          <pre className="email-view__text">{text || 'Sin contenido.'}</pre>
         )}
       </section>
 

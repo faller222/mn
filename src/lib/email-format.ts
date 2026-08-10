@@ -30,19 +30,14 @@ export function formatInboxWhen(iso?: string | null): string {
   const date = new Date(iso)
   if (Number.isNaN(date.getTime())) return ''
 
-  const now = new Date()
-  const sameDay =
-    date.toLocaleDateString('es-UY', { timeZone: 'America/Montevideo' }) ===
-    now.toLocaleDateString('es-UY', { timeZone: 'America/Montevideo' })
-
-  if (sameDay) {
-    return date.toLocaleTimeString('es-UY', {
-      timeZone: 'America/Montevideo',
-      hour: '2-digit',
-      minute: '2-digit',
-      hourCycle: 'h23',
-    })
-  }
+  const diffMs = Date.now() - date.getTime()
+  const mins = Math.floor(diffMs / 60_000)
+  if (mins < 1) return 'ahora'
+  if (mins < 60) return `hace ${mins} min`
+  const hours = Math.floor(mins / 60)
+  if (hours < 48) return `hace ${hours} h`
+  const days = Math.floor(hours / 24)
+  if (days < 14) return `hace ${days} d`
 
   return date.toLocaleDateString('es-UY', {
     timeZone: 'America/Montevideo',

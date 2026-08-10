@@ -8,14 +8,13 @@ const hiddenData = {
 export const InboxEmails: CollectionConfig = {
   slug: 'inbox-emails',
   labels: {
-    singular: 'Email recibido',
-    plural: 'Bandeja de entrada',
+    singular: 'Email',
+    plural: 'Emails',
   },
   admin: {
     useAsTitle: 'subject',
-    defaultColumns: ['subject', 'from', 'to', 'receivedAt', 'isRead'],
+    defaultColumns: ['from', 'to', 'subject', 'receivedAt'],
     group: 'Email',
-    description: 'Bandeja de emails recibidos vía Resend.',
     disableCopyToLocale: true,
     components: {
       views: {
@@ -29,10 +28,17 @@ export const InboxEmails: CollectionConfig = {
     },
   },
   access: {
-    read: ({ req: { user } }) => Boolean(user),
+    read: ({ req: { user } }) => {
+      if (!user) return false
+      return {
+        deleted: {
+          not_equals: true,
+        },
+      }
+    },
     create: () => false,
     update: ({ req: { user } }) => Boolean(user),
-    delete: ({ req: { user } }) => Boolean(user),
+    delete: () => false,
   },
   defaultSort: '-receivedAt',
   fields: [
@@ -53,29 +59,28 @@ export const InboxEmails: CollectionConfig = {
       admin: hiddenData,
     },
     {
-      name: 'isRead',
+      name: 'deleted',
       type: 'checkbox',
-      label: 'Leído',
+      label: 'Eliminado',
       defaultValue: false,
       index: true,
       admin: {
         position: 'sidebar',
-        description: 'Estado de lectura en la bandeja.',
+        description: 'Oculto de la bandeja (soft delete).',
       },
     },
     {
       name: 'from',
       type: 'text',
-      label: 'De',
+      label: 'Emisor',
       required: true,
       index: true,
       admin: hiddenData,
     },
-    // JSON arrays — avoid Payload hasMany join tables (inbox_emails_texts) that may not exist in prod.
     {
       name: 'to',
       type: 'json',
-      label: 'Para',
+      label: 'Receptor',
       required: true,
       admin: hiddenData,
     },
@@ -112,7 +117,7 @@ export const InboxEmails: CollectionConfig = {
     {
       name: 'receivedAt',
       type: 'date',
-      label: 'Recibido',
+      label: 'Fecha',
       required: true,
       admin: {
         date: { pickerAppearance: 'dayAndTime' },
@@ -123,7 +128,7 @@ export const InboxEmails: CollectionConfig = {
     {
       name: 'attachmentsMeta',
       type: 'json',
-      label: 'Adjuntos (metadata)',
+      label: 'Adjuntos',
       admin: hiddenData,
     },
     {
@@ -131,7 +136,6 @@ export const InboxEmails: CollectionConfig = {
       label: 'Detalles técnicos',
       admin: {
         initCollapsed: true,
-        description: 'IDs y metadata de Resend / webhook (debug y dedupe).',
       },
       fields: [
         {
@@ -141,10 +145,7 @@ export const InboxEmails: CollectionConfig = {
           required: true,
           unique: true,
           index: true,
-          admin: {
-            readOnly: true,
-            description: 'ID único en Resend — evita duplicados.',
-          },
+          admin: { readOnly: true },
         },
         {
           name: 'messageId',
@@ -157,19 +158,13 @@ export const InboxEmails: CollectionConfig = {
           type: 'text',
           label: 'Svix event ID',
           index: true,
-          admin: {
-            readOnly: true,
-            description: 'ID del evento webhook (dedupe de entregas).',
-          },
+          admin: { readOnly: true },
         },
         {
           name: 'receivedFor',
           type: 'json',
           label: 'Recibido para',
-          admin: {
-            readOnly: true,
-            description: 'Casilla real del catch-all (Received-For).',
-          },
+          admin: { readOnly: true },
         },
         {
           name: 'attachmentsRaw',
