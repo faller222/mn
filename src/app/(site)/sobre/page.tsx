@@ -47,7 +47,7 @@ const INVITADOS = [
   'Pablo Aníbal De León — Director técnico de fútbol',
   'Sebastián Barrios — Gestor cultural',
   'Ignacio Zuloaga — Artista plástico y pintor radicado en La Barra / Punta del Este',
-  'Toto Núñez Pallas — Delantero de fútbol profesional',
+  'Toto Núñez Pallas — Dirigente del Frente Amplio (San Carlos)',
 ]
 
 export default function SobrePage() {

@@ -163,7 +163,7 @@ Usar como “han pasado por su micrófono”, no como endosos:
 - Pablo Aníbal De León — Director técnico de fútbol
 - Sebastián Barrios — Gestor cultural
 - Ignacio Zuloaga — Artista plástico (La Barra / Punta del Este)
-- Toto Núñez Pallas — Delantero de fútbol profesional
+- Toto Núñez Pallas — Dirigente del Frente Amplio (San Carlos)
 
 ### 5.6 Primera persona — newsletter / columna
 
