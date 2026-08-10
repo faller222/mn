@@ -3,6 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { ViewArticleTracker } from './ViewArticleTracker'
+import { ShareButtons } from '@/components/ShareButtons'
 import { RichText } from '@/lib/richtext'
 import { formatPostDate, getPostBySlug, getPublishedPosts } from '@/lib/posts'
 import { SITE_URL } from '@/lib/constants'
@@ -37,7 +38,6 @@ export default async function NotaPage({ params }: Props) {
   if (!post) notFound()
 
   const shareUrl = `${SITE_URL}/noticias/${post.slug}`
-  const wa = `https://wa.me/?text=${encodeURIComponent(`${post.title} — ${shareUrl}`)}`
 
   return (
     <article className="article">
@@ -62,11 +62,12 @@ export default async function NotaPage({ params }: Props) {
 
       <RichText data={post.body} />
 
-      <div className="share-row">
-        <a className="btn btn--ghost" href={wa} target="_blank" rel="noopener noreferrer">
-          Compartir por WhatsApp
-        </a>
-      </div>
+      <ShareButtons
+        title={post.title}
+        excerpt={post.excerpt}
+        url={shareUrl}
+        coverUrl={post.coverUrl}
+      />
 
       <div className="article-cta">
         <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.8rem', margin: '0 0 0.6rem' }}>

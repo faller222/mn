@@ -1,12 +1,8 @@
 import Script from 'next/script'
 import { GA_MEASUREMENT_ID } from '@/lib/constants'
-import { isGateEnabled } from '@/lib/gate'
 
 export function Analytics() {
-  // Still load GA behind the gate (internal review traffic is fine).
-  // Skip only if ID missing.
   if (!GA_MEASUREMENT_ID) return null
-  void isGateEnabled
 
   return (
     <>

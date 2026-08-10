@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { ContactForm } from '@/components/ContactForm'
-import { INSTAGRAM_URL } from '@/lib/constants'
+import { SocialIcons } from '@/components/SocialIcons'
 
 export const metadata: Metadata = {
   title: 'Contacto y pautas',
@@ -21,16 +21,7 @@ export default async function ContactoPage({ searchParams }: Props) {
         <p className="section__lead">Para pautas, entrevistas y consultas.</p>
         <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.6rem' }}>Directo</h2>
         <p style={{ color: 'var(--muted)' }}>Maldonado, Uruguay</p>
-        <p>
-          <a
-            className="text-link"
-            href={INSTAGRAM_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Instagram @mnocetti1
-          </a>
-        </p>
+        <SocialIcons />
       </div>
 
       <div>

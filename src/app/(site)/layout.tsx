@@ -4,7 +4,6 @@ import { Footer } from '@/components/Footer'
 import { Header } from '@/components/Header'
 import { MiniPlayer } from '@/components/MiniPlayer'
 import { PlayerProvider } from '@/components/PlayerProvider'
-import { isGateEnabled } from '@/lib/gate'
 import { SITE_URL } from '@/lib/constants'
 import '../globals.css'
 
@@ -17,9 +16,7 @@ export const metadata: Metadata = {
   description:
     'Periodismo, entrevistas y actualidad desde Maldonado. Escuchá en vivo a Martín Nocetti y explorá el archivo en MN.',
   authors: [{ name: 'Martín Nocetti' }],
-  robots: isGateEnabled()
-    ? { index: false, follow: false }
-    : { index: true, follow: true },
+  robots: { index: true, follow: true },
   openGraph: {
     title: 'MN — Martín Nocetti',
     description:

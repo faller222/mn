@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import { SpotifyEmbed } from '@/components/SpotifyEmbed'
-import { INSTAGRAM_URL } from '@/lib/constants'
+import { SocialIcons } from '@/components/SocialIcons'
 
 export const metadata: Metadata = {
   title: 'Sobre Martín Nocetti',
@@ -103,14 +103,7 @@ export default function SobrePage() {
 
       <section className="section" aria-labelledby="redes-title">
         <h2 id="redes-title">Redes</h2>
-        <a
-          className="btn btn--ghost"
-          href={INSTAGRAM_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Instagram @mnocetti1
-        </a>
+        <SocialIcons />
       </section>
 
       <section className="about-contact" aria-labelledby="about-contact-title">
