@@ -6,8 +6,8 @@ import { config } from 'dotenv'
 config({ path: '.env.local' })
 
 async function main() {
-  const apiKey = process.env.resend?.trim()
-  if (!apiKey) throw new Error('Missing env `resend`')
+  const apiKey = process.env.RESEND_API_KEY?.trim()
+  if (!apiKey) throw new Error('Missing env `RESEND_API_KEY`')
 
   const listRes = await fetch('https://api.resend.com/emails/receiving?limit=50', {
     headers: { Authorization: `Bearer ${apiKey}` },

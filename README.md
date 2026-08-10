@@ -64,8 +64,8 @@ Público: solo `published`.
 
 Env (nombres tal cual en `secrets`):
 
-- `resend` — API key (send + receiving)
-- Signing secret del webhook: `resend-signing-secret` en local/`secrets`; en Vercel `resend_signing_secret` (no acepta guiones)
+- `RESEND_API_KEY` — send + receiving
+- `RESEND_WEBHOOK_SECRET` — signing secret del webhook
 
 Admin: grupo **Email → Bandeja de entrada**. Botón **Sincronizar con Resend** o `POST /api/inbox/sync` (sesión admin).
 

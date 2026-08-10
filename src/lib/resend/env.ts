@@ -1,27 +1,19 @@
 import 'server-only'
 
-/**
- * Resend env keys:
- * - API: `resend` (as in `secrets`)
- * - Webhook signing: `resend-signing-secret` locally / `resend_signing_secret` on Vercel
- *   (Vercel rejects hyphens in env names; both are accepted here.)
- */
+/** Resend API key — env `RESEND_API_KEY`. */
 export function getResendApiKey(): string {
-  const key = process.env.resend?.trim()
+  const key = process.env.RESEND_API_KEY?.trim()
   if (!key) {
-    throw new Error('Missing env `resend` (Resend API key).')
+    throw new Error('Missing env `RESEND_API_KEY`.')
   }
   return key
 }
 
+/** Webhook signing secret — env `RESEND_WEBHOOK_SECRET`. */
 export function getResendWebhookSecret(): string {
-  const secret =
-    process.env['resend-signing-secret']?.trim() ||
-    process.env.resend_signing_secret?.trim()
+  const secret = process.env.RESEND_WEBHOOK_SECRET?.trim()
   if (!secret) {
-    throw new Error(
-      'Missing env `resend-signing-secret` or `resend_signing_secret` (Resend webhook signing secret).',
-    )
+    throw new Error('Missing env `RESEND_WEBHOOK_SECRET`.')
   }
   return secret
 }
