@@ -23,15 +23,22 @@ export function ShareButtons({ title, excerpt, url, coverUrl }: Props) {
   const x = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shortText)}&url=${encodeURIComponent(url)}`
   const threads = `https://www.threads.net/intent/post?text=${encodeURIComponent(`${shortText}\n${url}`)}`
 
-  async function shareInstagramStory() {
-    trackShare('instagram_story')
+  async function nativeShare() {
+    trackShare('native')
     setStatus(null)
 
     try {
-      if (coverUrl && typeof navigator !== 'undefined' && navigator.share) {
+      if (!navigator.share) {
+        await navigator.clipboard.writeText(url)
+        setStatus('Link copiado.')
+        return
+      }
+
+      if (coverUrl) {
         const res = await fetch(coverUrl)
         const blob = await res.blob()
-        const file = new File([blob], 'mn-portada.jpg', {
+        const ext = blob.type.includes('png') ? 'png' : 'jpg'
+        const file = new File([blob], `mn-${Date.now()}.${ext}`, {
           type: blob.type || 'image/jpeg',
         })
 
@@ -42,34 +49,22 @@ export function ShareButtons({ title, excerpt, url, coverUrl }: Props) {
             text: `${shortText}\n${url}`,
             url,
           })
-          setStatus('Compartido.')
           return
         }
       }
 
-      if (coverUrl) {
-        const a = document.createElement('a')
-        a.href = coverUrl
-        a.download = 'mn-portada.jpg'
-        a.target = '_blank'
-        a.rel = 'noopener'
-        document.body.appendChild(a)
-        a.click()
-        a.remove()
-      }
-
-      await navigator.clipboard.writeText(url)
-      setStatus(
-        coverUrl
-          ? 'Portada lista para descargar y link copiado. Pegalo en tu Story de Instagram.'
-          : 'Link copiado. Pegalo en tu Story de Instagram.',
-      )
-    } catch {
+      await navigator.share({
+        title,
+        text: shortText,
+        url,
+      })
+    } catch (err) {
+      if (err instanceof DOMException && err.name === 'AbortError') return
       try {
         await navigator.clipboard.writeText(url)
         setStatus('Link copiado.')
       } catch {
-        setStatus('No se pudo compartir. Copiá el link manualmente.')
+        setStatus('No se pudo compartir.')
       }
     }
   }
@@ -111,10 +106,10 @@ export function ShareButtons({ title, excerpt, url, coverUrl }: Props) {
         <button
           type="button"
           className="share-btn"
-          aria-label="Compartir en Instagram Stories"
-          onClick={() => void shareInstagramStory()}
+          aria-label="Compartir"
+          onClick={() => void nativeShare()}
         >
-          <InstagramIcon />
+          <ShareIcon />
         </button>
       </div>
       {status ? (
@@ -146,15 +141,15 @@ function XIcon() {
 function ThreadsIcon() {
   return (
     <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="currentColor">
-      <path d="M12.186 2.03c-2.76-.13-5.31 1.1-6.85 3.3C3.88 7.75 3.2 10.7 3.86 13.5c.7 2.95 2.8 5.25 5.55 6.2 1.35.47 2.8.6 4.22.4 1.65-.24 3.15-.95 4.35-2.05.35-.32.3-.9-.1-1.15-.35-.22-.8-.14-1.1.15-1.7 1.55-4.05 2.1-6.25 1.35-2.05-.7-3.55-2.45-4.05-4.55-.35-1.55-.1-3.2.7-4.55 1.05-1.8 2.95-2.85 5.05-2.85h.2c1.85.05 3.45.9 4.4 2.35.45.7.7 1.5.75 2.35.05.7-.1 1.4-.4 2.05-.45.95-1.2 1.7-2.15 2.15.55.2 1.05.55 1.4 1 .7.95.9 2.2.5 3.35-.55 1.55-1.95 2.55-3.7 2.7-1.2.1-2.35-.25-3.2-.95-.7-.55-.8-1.55-.25-2.25.5-.65 1.4-.8 2.1-.35.35.25.75.35 1.15.3.75-.1 1.25-.75 1.15-1.5-.1-.65-.65-1.1-1.3-1.1-.35 0-.7.15-.95.4-.35.35-.9.35-1.25 0-.35-.35-.35-.9 0-1.25.7-.7 1.7-1.1 2.7-1.05 1.85.1 3.3 1.55 3.45 3.4.1 1.35-.35 2.65-1.25 3.6-.95 1-2.3 1.6-3.75 1.7-2.35.15-4.45-1.1-5.4-3.2-.7-1.55-.65-3.3.15-4.8.95-1.8 2.75-3 4.8-3.2 2.55-.25 4.95.95 6.25 3.05.45.7 1.4.9 2.1.45.7-.45.9-1.4.45-2.1C18.9 5.55 15.8 3.55 12.4 3.2c-.07-.01-.14-.01-.21-.01l-.004-.16z" />
+      <path d="M12.186 24h-.007c-3.581-.024-6.334-1.205-8.184-3.509C2.35 18.44 1.5 15.586 1.472 12.01v-.017c.03-3.579.879-6.43 2.525-8.482C5.845 1.205 8.6.024 12.18 0h.014c2.746.02 5.043.725 6.826 2.098 1.677 1.29 2.858 3.13 3.509 5.467l-2.04.569c-1.104-3.96-3.898-5.984-8.304-6.015-2.91.022-5.11.936-6.54 2.717C4.307 6.504 3.616 8.914 3.589 12c.027 3.086.718 5.496 2.057 7.164 1.43 1.783 3.631 2.698 6.54 2.717 2.623-.02 4.358-.631 5.8-2.045 1.647-1.613 1.618-3.593 1.09-4.798-.31-.71-.873-1.3-1.634-1.75-.192 1.352-.622 2.446-1.284 3.272-.886 1.102-2.14 1.704-3.73 1.79-1.202.065-2.361-.218-3.259-.801-1.063-.689-1.685-1.74-1.752-2.964-.065-1.19.408-2.285 1.33-3.082.88-.76 2.119-1.207 3.583-1.291a13.853 13.853 0 0 1 3.02.142c-.126-.742-.375-1.332-.75-1.757-.513-.586-1.308-.883-2.359-.89h-.029c-.844 0-1.992.232-2.721 1.32L7.734 7.847c.98-1.454 2.568-2.256 4.478-2.256h.044c3.194.02 5.097 1.975 5.287 5.388.108.046.216.094.321.142 1.49.7 2.58 1.761 3.154 3.07.797 1.82.871 4.79-1.548 7.158-1.85 1.81-4.094 2.628-7.277 2.65Zm1.003-11.69c-.242 0-.487.007-.739.021-1.836.103-2.98.946-2.916 2.143.067 1.256 1.452 1.839 2.784 1.767 1.224-.065 2.818-.543 3.086-3.71a10.5 10.5 0 0 0-2.215-.221z" />
     </svg>
   )
 }
 
-function InstagramIcon() {
+function ShareIcon() {
   return (
     <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="currentColor">
-      <path d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9A5.5 5.5 0 0 1 16.5 22h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2zm0 2A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9a3.5 3.5 0 0 0 3.5-3.5v-9A3.5 3.5 0 0 0 16.5 4h-9zm9.25 1.75a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6z" />
+      <path d="M18 8a3 3 0 1 0-2.97-3.35L8.7 8.06a3 3 0 1 0 0 7.88l6.33 3.41A3 3 0 1 0 16.4 17.7l-6.33-3.41a3.05 3.05 0 0 0 0-1.58l6.33-3.41A3 3 0 0 0 18 8z" />
     </svg>
   )
 }

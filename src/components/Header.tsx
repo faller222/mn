@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useId, useState } from 'react'
+import { SPOTIFY_SHOW_URL } from '@/lib/constants'
 import { usePlayer } from './PlayerProvider'
 
 const NAV = [
@@ -14,7 +15,7 @@ const NAV = [
 ]
 
 export function Header() {
-  const { playing, toggle } = usePlayer()
+  const { playing, onAir, toggle } = usePlayer()
   const [open, setOpen] = useState(false)
   const menuId = useId()
 
@@ -48,15 +49,27 @@ export function Header() {
         </nav>
 
         <div className="header-actions">
-          <button
-            type="button"
-            className={`live-btn ${playing ? 'is-live' : ''}`}
-            onClick={toggle}
-            aria-pressed={playing}
-            aria-label="Escuchar en vivo — programa de Martín Nocetti"
-          >
-            {playing ? '● EN VIVO' : '> LIVE'}
-          </button>
+          {onAir ? (
+            <button
+              type="button"
+              className={`live-btn ${playing ? 'is-live' : ''}`}
+              onClick={toggle}
+              aria-pressed={playing}
+              aria-label="Escuchar en vivo — programa de Martín Nocetti"
+            >
+              {playing ? '● EN VIVO' : '> LIVE'}
+            </button>
+          ) : (
+            <a
+              className="live-btn"
+              href={SPOTIFY_SHOW_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Abrir archivo en Spotify"
+            >
+              Spotify
+            </a>
+          )}
 
           <button
             type="button"
@@ -78,18 +91,30 @@ export function Header() {
                 {item.label}
               </Link>
             ))}
-            <button
-              type="button"
-              className="live-btn live-btn--block"
-              onClick={() => {
-                toggle()
-                setOpen(false)
-              }}
-              aria-pressed={playing}
-              aria-label="Escuchar en vivo — programa de Martín Nocetti"
-            >
-              {playing ? 'Pausar en vivo' : 'Escuchar en vivo'}
-            </button>
+            {onAir ? (
+              <button
+                type="button"
+                className="live-btn live-btn--block"
+                onClick={() => {
+                  toggle()
+                  setOpen(false)
+                }}
+                aria-pressed={playing}
+                aria-label="Escuchar en vivo — programa de Martín Nocetti"
+              >
+                {playing ? 'Pausar en vivo' : 'Escuchar en vivo'}
+              </button>
+            ) : (
+              <a
+                className="live-btn live-btn--block"
+                href={SPOTIFY_SHOW_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setOpen(false)}
+              >
+                Abrir en Spotify
+              </a>
+            )}
           </nav>
         </div>
       ) : null}

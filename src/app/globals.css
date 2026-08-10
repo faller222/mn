@@ -72,9 +72,9 @@ textarea {
 .site-header {
   position: sticky;
   top: 0;
-  z-index: 40;
+  z-index: 90;
   backdrop-filter: blur(14px);
-  background: rgba(0, 0, 0, 0.72);
+  background: rgba(0, 0, 0, 0.92);
   border-bottom: 1px solid var(--line);
 }
 
@@ -156,9 +156,10 @@ textarea {
 .nav-overlay {
   position: fixed;
   inset: var(--header-h) 0 0;
-  background: rgba(0, 0, 0, 0.96);
+  background: #000;
   padding: 2rem;
-  z-index: 50;
+  z-index: 80;
+  isolation: isolate;
 }
 
 .nav-overlay nav {

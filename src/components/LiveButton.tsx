@@ -1,5 +1,6 @@
 'use client'
 
+import { SPOTIFY_SHOW_URL } from '@/lib/constants'
 import { usePlayer } from './PlayerProvider'
 
 export function LiveButton({
@@ -9,7 +10,16 @@ export function LiveButton({
   className?: string
   label?: string
 }) {
-  const { playing, toggle } = usePlayer()
+  const { playing, onAir, toggle } = usePlayer()
+
+  if (!onAir) {
+    return (
+      <a className={className} href={SPOTIFY_SHOW_URL} target="_blank" rel="noopener noreferrer">
+        Abrir en Spotify
+      </a>
+    )
+  }
+
   return (
     <button
       type="button"

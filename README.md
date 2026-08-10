@@ -40,11 +40,12 @@ public/brand/         # logo + foto de Martín
 public/admin/         # manifest + iconos PWA del panel
 ```
 
-## Admin en el iPhone (PWA)
+## Admin como app (PWA, solo `/admin`)
 
-1. Abrí `https://nocetti.uy/admin` en Safari.
-2. Compartír → **Agregar a pantalla de inicio**.
-3. Se instala como “MN Admin” (solo scope `/admin`).
+**iPhone (Safari):** `/admin` → Compartir → **Agregar a pantalla de inicio**.
+
+**Android (Chrome):** `/admin` → menú ⋮ → **Instalar app** / **Agregar a pantalla de inicio**.  
+(Hay service worker mínimo en `/admin/sw.js` para que Chrome lo ofrezca.)
 
 El login de edición es el de Payload (`/admin`).
 
