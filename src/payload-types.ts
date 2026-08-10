@@ -70,6 +70,7 @@ export interface Config {
     users: User;
     media: Media;
     posts: Post;
+    'inbox-emails': InboxEmail;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -80,6 +81,7 @@ export interface Config {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
+    'inbox-emails': InboxEmailsSelect<false> | InboxEmailsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -271,6 +273,91 @@ export interface Post {
   createdAt: string;
 }
 /**
+ * Emails recibidos vía Resend (sincronizados por API o webhook).
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "inbox-emails".
+ */
+export interface InboxEmail {
+  id: number;
+  subject: string;
+  from: string;
+  to:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  cc?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  bcc?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  replyTo?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  text?: string | null;
+  /**
+   * Cuerpo HTML tal como lo devuelve Resend.
+   */
+  html?: string | null;
+  receivedAt: string;
+  /**
+   * ID único en Resend — usado para evitar duplicados.
+   */
+  resendId: string;
+  messageId?: string | null;
+  receivedFor?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  /**
+   * Metadata de adjuntos. Descarga vía API de Resend si hace falta.
+   */
+  attachmentsMeta?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  /**
+   * ID del evento webhook (dedupe de entregas).
+   */
+  svixId?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
@@ -305,6 +392,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'posts';
         value: number | Post;
+      } | null)
+    | ({
+        relationTo: 'inbox-emails';
+        value: number | InboxEmail;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -419,6 +510,28 @@ export interface PostsSelect<T extends boolean = true> {
   coverImage?: T;
   publishedAt?: T;
   status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "inbox-emails_select".
+ */
+export interface InboxEmailsSelect<T extends boolean = true> {
+  subject?: T;
+  from?: T;
+  to?: T;
+  cc?: T;
+  bcc?: T;
+  replyTo?: T;
+  text?: T;
+  html?: T;
+  receivedAt?: T;
+  resendId?: T;
+  messageId?: T;
+  receivedFor?: T;
+  attachmentsMeta?: T;
+  svixId?: T;
   updatedAt?: T;
   createdAt?: T;
 }

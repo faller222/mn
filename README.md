@@ -33,9 +33,10 @@ src/
   app/
     (site)/           # Home, Sobre, Contacto, Noticias
     (payload)/        # /admin + API Payload (PWA iPhone)
-  collections/        # Users, Media, Posts
+  collections/        # Users, Media, Posts, InboxEmails
   components/
   lib/
+    resend/           # Cliente Resend (list/get/send/webhook)
 public/brand/         # logo + foto de Martín
 public/admin/         # manifest + iconos PWA del panel
 ```
@@ -58,6 +59,17 @@ El hero “EN VIVO” se activa por horario interno (no se publica en la web). O
 `title`, `slug`, `body`, `coverImage`, `publishedAt`, `status` (`draft` | `published` | `hidden`).
 
 Público: solo `published`.
+
+## Email / Inbox (Resend)
+
+Env (nombres tal cual en `secrets`):
+
+- `resend` — API key (send + receiving)
+- Signing secret del webhook: `resend-signing-secret` en local/`secrets`; en Vercel `resend_signing_secret` (no acepta guiones)
+
+Admin: grupo **Email → Bandeja de entrada**. Botón **Sincronizar con Resend** o `POST /api/inbox/sync` (sesión admin).
+
+Webhook inbound: `POST /api/webhooks/resend` (evento `email.received`).
 
 ## Reglas de marca
 

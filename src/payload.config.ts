@@ -7,6 +7,7 @@ import { fileURLToPath } from 'url'
 import sharp from 'sharp'
 import { cloudinaryStorage } from 'payload-cloudinary'
 
+import { InboxEmails } from './collections/InboxEmails'
 import { Media } from './collections/Media'
 import { Posts } from './collections/Posts'
 import { Users } from './collections/Users'
@@ -33,7 +34,7 @@ export default buildConfig({
     fallbackLanguage: 'es',
     supportedLanguages: { es },
   },
-  collections: [Users, Media, Posts],
+  collections: [Users, Media, Posts, InboxEmails],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || 'change-me-in-production',
   typescript: {
