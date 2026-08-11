@@ -23,13 +23,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
   const post = await getPostBySlug(slug)
   if (!post) return { title: 'Nota' }
+  const shareImage = `${SITE_URL}/api/share/noticias/${post.slug}`
   return {
     title: post.title,
     description: post.excerpt || undefined,
     openGraph: {
       title: post.title,
       description: post.excerpt || undefined,
-      images: post.coverUrl ? [{ url: post.coverUrl }] : undefined,
+      images: [{ url: shareImage, width: 1080, height: 1350 }],
     },
   }
 }
@@ -68,7 +69,7 @@ export default async function NotaPage({ params }: Props) {
         title={post.title}
         excerpt={post.excerpt}
         url={shareUrl}
-        coverUrl={post.coverUrl}
+        slug={post.slug}
       />
 
       <div className="article-cta">

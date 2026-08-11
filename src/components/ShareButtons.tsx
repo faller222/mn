@@ -7,14 +7,14 @@ type Props = {
   title: string
   excerpt?: string | null
   url: string
-  coverUrl?: string | null
+  slug: string
 }
 
 function trackShare(network: string) {
   trackEvent('click_share', { network })
 }
 
-export function ShareButtons({ title, excerpt, url, coverUrl }: Props) {
+export function ShareButtons({ title, excerpt, url, slug }: Props) {
   const [status, setStatus] = useState<string | null>(null)
   const text = excerpt?.trim() ? `${title}\n\n${excerpt}\n\n${url}` : `${title}\n\n${url}`
   const shortText = excerpt?.trim() ? `${title} — ${excerpt}` : title
@@ -34,13 +34,10 @@ export function ShareButtons({ title, excerpt, url, coverUrl }: Props) {
         return
       }
 
-      if (coverUrl) {
-        const res = await fetch(coverUrl)
+      const res = await fetch(`/api/share/noticias/${encodeURIComponent(slug)}`)
+      if (res.ok) {
         const blob = await res.blob()
-        const ext = blob.type.includes('png') ? 'png' : 'jpg'
-        const file = new File([blob], `mn-${Date.now()}.${ext}`, {
-          type: blob.type || 'image/jpeg',
-        })
+        const file = new File([blob], `mn-${slug}.png`, { type: 'image/png' })
 
         if (navigator.canShare?.({ files: [file] })) {
           await navigator.share({
