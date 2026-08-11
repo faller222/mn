@@ -1,11 +1,13 @@
 import { ImageResponse } from 'next/og'
 import { readFile } from 'node:fs/promises'
 import path from 'node:path'
+import sharp from 'sharp'
 import { SITE_URL } from '@/lib/constants'
 import { getPostBySlug } from '@/lib/posts'
 
 export const runtime = 'nodejs'
-export const revalidate = 3600
+/** Soft cache; busted on post save via revalidatePath in Posts hooks. */
+export const revalidate = 300
 
 type Params = { params: Promise<{ slug: string }> }
 
@@ -18,6 +20,33 @@ async function loadDisplayFont() {
   return readFile(fontPath)
 }
 
+function absoluteUrl(url: string) {
+  if (url.startsWith('http://') || url.startsWith('https://')) return url
+  return `${SITE_URL}${url.startsWith('/') ? '' : '/'}${url}`
+}
+
+/** Fetch current cover bytes and embed as data URI — no static preload; always reflects live cover. */
+async function coverAsDataUri(coverUrl: string): Promise<string | null> {
+  try {
+    const res = await fetch(absoluteUrl(coverUrl), {
+      // Cache fetch briefly; cover URL / revalidatePath invalidate when the note changes.
+      next: { revalidate: 300 },
+    })
+    if (!res.ok) return null
+
+    const input = Buffer.from(await res.arrayBuffer())
+    const jpeg = await sharp(input)
+      .rotate()
+      .resize(WIDTH, HEIGHT, { fit: 'cover', position: 'centre' })
+      .jpeg({ quality: 82, mozjpeg: true })
+      .toBuffer()
+
+    return `data:image/jpeg;base64,${jpeg.toString('base64')}`
+  } catch {
+    return null
+  }
+}
+
 export async function GET(_req: Request, { params }: Params) {
   const { slug } = await params
   const post = await getPostBySlug(slug)
@@ -28,11 +57,7 @@ export async function GET(_req: Request, { params }: Params) {
 
   const fontData = await loadDisplayFont()
   const linkLabel = `nocetti.uy/noticias/${post.slug}`
-  const coverSrc = post.coverUrl
-    ? post.coverUrl.startsWith('http')
-      ? post.coverUrl
-      : `${SITE_URL}${post.coverUrl}`
-    : null
+  const coverSrc = post.coverUrl ? await coverAsDataUri(post.coverUrl) : null
 
   return new ImageResponse(
     (
@@ -128,6 +153,9 @@ export async function GET(_req: Request, { params }: Params) {
           weight: 400,
         },
       ],
+      headers: {
+        'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=3600',
+      },
     },
   )
 }

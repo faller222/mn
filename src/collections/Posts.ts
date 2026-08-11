@@ -5,9 +5,13 @@ import { publicPostWhere } from '@/lib/post-types'
 const revalidatePublicPosts: CollectionAfterChangeHook = ({ doc, previousDoc }) => {
   revalidatePath('/noticias')
   revalidatePath('/')
-  if (doc?.slug) revalidatePath(`/noticias/${doc.slug}`)
+  if (doc?.slug) {
+    revalidatePath(`/noticias/${doc.slug}`)
+    revalidatePath(`/api/share/noticias/${doc.slug}`)
+  }
   if (previousDoc?.slug && previousDoc.slug !== doc?.slug) {
     revalidatePath(`/noticias/${previousDoc.slug}`)
+    revalidatePath(`/api/share/noticias/${previousDoc.slug}`)
   }
   return doc
 }

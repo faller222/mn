@@ -14,7 +14,9 @@ function mediaUrl(cover: Post['coverImage']): { url?: string | null; alt?: strin
     return {}
   }
   const media = cover as Media
-  return { url: media.url, alt: media.alt }
+  // Prefer CDN URL: Payload `url` is often a relative `/api/media/file/...` that OG can't load reliably.
+  const url = media.cloudinary?.secure_url || media.url
+  return { url, alt: media.alt }
 }
 
 const QUERY_TIMEOUT_MS = 4000
