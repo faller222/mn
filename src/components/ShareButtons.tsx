@@ -40,10 +40,11 @@ export function ShareButtons({ title, excerpt, url, slug }: Props) {
         const file = new File([blob], `mn-${slug}.png`, { type: 'image/png' })
 
         if (navigator.canShare?.({ files: [file] })) {
+          // Do not put `url` inside `text`: WhatsApp (and others) append `url` again.
           await navigator.share({
             files: [file],
             title,
-            text: `${shortText}\n${url}`,
+            text: shortText,
             url,
           })
           return

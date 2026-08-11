@@ -95,8 +95,9 @@ export async function GET(_req: Request, { params }: Params) {
             left: 0,
             right: 0,
             bottom: 0,
-            height: '40%',
-            backgroundImage: 'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 100%)',
+            height: '52%',
+            backgroundImage:
+              'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.45) 35%, rgba(0,0,0,0.88) 70%, rgba(0,0,0,1) 100%)',
           }}
         />
 
