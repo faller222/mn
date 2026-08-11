@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>El Municipio de Punta del Este, cada vez más “casa del vecino”</title>
+  <style>
+:root {
+  --bg: #f6f4ef;
+  --card: #fff;
+  --ink: #1a1a1a;
+  --muted: #5c5c5c;
+  --line: #ddd6c8;
+  --accent: #c25800;
+  --ok: #1b6b3a;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.5;
+}
+.wrap { max-width: 820px; margin: 0 auto; padding: 24px 16px 64px; }
+h1.page-title { font-size: 1.15rem; margin: 0 0 4px; color: var(--muted); font-weight: 600; }
+.hint { color: var(--muted); font-size: 0.9rem; margin: 0 0 20px; }
+.meta {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 12px;
+  display: grid;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+.field {
+  display: grid;
+  grid-template-columns: 40px 110px 1fr;
+  gap: 8px;
+  align-items: start;
+}
+.field label {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  padding-top: 10px;
+}
+.field input, .field textarea {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 8px 10px;
+  font: inherit;
+  background: #fafafa;
+  color: var(--ink);
+}
+.field textarea { min-height: 72px; resize: vertical; }
+.copy-btn {
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+}
+.copy-btn:hover { border-color: var(--accent); }
+.copy-btn.ok { background: #e8f6ee; border-color: var(--ok); }
+.toolbar {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+.toolbar button {
+  border: 1px solid var(--line);
+  background: var(--accent);
+  color: #fff;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font: inherit;
+  cursor: pointer;
+}
+.toolbar button.secondary {
+  background: #fff;
+  color: var(--ink);
+}
+article#cuerpo {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 28px 24px;
+}
+article#cuerpo h1 {
+  font-size: 1.65rem;
+  line-height: 1.25;
+  margin: 0 0 1rem;
+}
+article#cuerpo p { margin: 0 0 1rem; max-width: 68ch; }
+article#cuerpo a { color: var(--accent); }
+.toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #123;
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 8px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s;
+}
+.toast.show { opacity: 1; }
+@media (max-width: 640px) {
+  .field { grid-template-columns: 40px 1fr; }
+  .field label { grid-column: 2; padding-top: 0; }
+  .field input, .field textarea { grid-column: 2; }
+}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <h1 class="page-title">Nota lista para crear en MN</h1>
+    <p class="hint">Abrí este archivo en el navegador. A la izquierda de cada campo, el botón copia al clipboard.</p>
+
+    <section class="meta" aria-label="Metadatos">
+    <div class="field">
+      <button type="button" class="copy-btn" title="Copiar Título" onclick="copyField('title', this)">⧉</button>
+      <label for="title">Título</label>
+      <input id="title" type="text" readonly value="El Municipio de Punta del Este, cada vez más “casa del vecino”">
+    </div>
+    <div class="field">
+      <button type="button" class="copy-btn" title="Copiar Slug" onclick="copyField('slug', this)">⧉</button>
+      <label for="slug">Slug</label>
+      <input id="slug" type="text" readonly value="carballal-municipio-casa-del-vecino-talleres">
+    </div>
+    <div class="field">
+      <button type="button" class="copy-btn" title="Copiar Resumen" onclick="copyField('excerpt', this)">⧉</button>
+      <label for="excerpt">Resumen</label>
+      <textarea id="excerpt" readonly rows="3">Carballal describe el municipio como centro de referencia todo el año: talleres a sala llena, cine, cultura y una llegada permanente de vecinos.</textarea>
+    </div>
+    <div class="field">
+      <button type="button" class="copy-btn" title="Copiar Fecha" onclick="copyField('publishedAt', this)">⧉</button>
+      <label for="publishedAt">Fecha</label>
+      <input id="publishedAt" type="text" readonly value="Jul 18, 2026 10:00 AM">
+    </div>
+    <div class="field">
+      <button type="button" class="copy-btn" title="Copiar Spotify" onclick="copyField('spotify', this)">⧉</button>
+      <label for="spotify">Spotify</label>
+      <input id="spotify" type="text" readonly value="https://open.spotify.com/episode/1hDdY4aLrs2pqvyJzQQJdo">
+    </div>
+    <div class="field">
+      <button type="button" class="copy-btn" title="Copiar Invitado" onclick="copyField('invitado', this)">⧉</button>
+      <label for="invitado">Invitado</label>
+      <input id="invitado" type="text" readonly value="Javier Carballal">
+    </div>
+    <div class="field">
+      <button type="button" class="copy-btn" title="Copiar Episodio" onclick="copyField('episodio', this)">⧉</button>
+      <label for="episodio">Episodio</label>
+      <input id="episodio" type="text" readonly value="164">
+    </div>
+    </section>
+
+    <div class="toolbar">
+      <button type="button" onclick="copyBodyHtml(this)">Copiar cuerpo HTML</button>
+      <button type="button" class="secondary" onclick="copyBodyText(this)">Copiar cuerpo texto</button>
+    </div>
+
+    <article id="cuerpo">
+      <h1>El Municipio de Punta del Este, cada vez más “casa del vecino”</h1>
+        <p>Javier Carballal describió un cambio de época en el Municipio de Punta del Este: de una lógica más turística a una institución a la que el vecino llega todo el año, <i>“tanto para lo bueno como para lo malo”</i>. En la entrevista con Martín Nocetti, el alcalde insistió en que el valor no es personal sino institucional: que la gente se sienta identificada con el municipio como centro de referencia.</p>
+        <p>Ese rol se nota, dijo, en la demanda de talleres y actividades. Hoy conviven cursos de deporte, cultura, radio operador, marketing digital, idiomas, sommelier, tejido, electricidad, coro infantil, música, dibujo y pintura. <i>“Tenemos problemas con los tiempos en la sala”</i>; llegaron a tener cinco cursos a la vez. En Cultura, sumó, se anotaron cientos de personas.</p>
+        <p>También destacó el cine impulsado por Fernando Goldman, con sala llena, y la necesidad de cerrar espacios como Benito Esther y Humberto Pereira para montar dos salas. Para Carballal, la clave es la confianza acumulada: cada propuesta genera cola, y el municipio creció en funcionarios y cuadrillas para acompañar esa llegada permanente de residentes —muchos del interior y de Montevideo— que encuentran contención en los talleres.</p>
+        <p>Escuchá la nota completa en <a href="https://open.spotify.com/episode/1hDdY4aLrs2pqvyJzQQJdo" target="_blank" rel="noopener noreferrer">Spotify</a>.</p>
+    </article>
+  </div>
+  <div id="toast" class="toast" role="status"></div>
+  <script>
+async function copyText(text, btn) {
+  try {
+    await navigator.clipboard.writeText(text);
+  } catch (e) {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    ta.remove();
+  }
+  if (btn) {
+    btn.classList.add('ok');
+    const prev = btn.textContent;
+    btn.textContent = '✓';
+    setTimeout(() => { btn.classList.remove('ok'); btn.textContent = prev; }, 900);
+  }
+  const toast = document.getElementById('toast');
+  toast.textContent = 'Copiado';
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 1200);
+}
+function copyField(id, btn) {
+  const el = document.getElementById(id);
+  copyText(el.value, btn);
+}
+function copyBodyHtml(btn) {
+  const html = document.getElementById('cuerpo').innerHTML.trim();
+  copyText(html, btn);
+}
+function copyBodyText(btn) {
+  const text = document.getElementById('cuerpo').innerText.trim();
+  copyText(text, btn);
+}
+</script>
+</body>
+</html>

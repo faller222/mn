@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Carballal: “Es un año positivo”; el plan de obras ya empezó a verse en las calles</title>
+  <style>
+:root {
+  --bg: #f6f4ef;
+  --card: #fff;
+  --ink: #1a1a1a;
+  --muted: #5c5c5c;
+  --line: #ddd6c8;
+  --accent: #c25800;
+  --ok: #1b6b3a;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.5;
+}
+.wrap { max-width: 820px; margin: 0 auto; padding: 24px 16px 64px; }
+h1.page-title { font-size: 1.15rem; margin: 0 0 4px; color: var(--muted); font-weight: 600; }
+.hint { color: var(--muted); font-size: 0.9rem; margin: 0 0 20px; }
+.meta {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 12px;
+  display: grid;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+.field {
+  display: grid;
+  grid-template-columns: 40px 110px 1fr;
+  gap: 8px;
+  align-items: start;
+}
+.field label {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  padding-top: 10px;
+}
+.field input, .field textarea {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 8px 10px;
+  font: inherit;
+  background: #fafafa;
+  color: var(--ink);
+}
+.field textarea { min-height: 72px; resize: vertical; }
+.copy-btn {
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+}
+.copy-btn:hover { border-color: var(--accent); }
+.copy-btn.ok { background: #e8f6ee; border-color: var(--ok); }
+.toolbar {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+.toolbar button {
+  border: 1px solid var(--line);
+  background: var(--accent);
+  color: #fff;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font: inherit;
+  cursor: pointer;
+}
+.toolbar button.secondary {
+  background: #fff;
+  color: var(--ink);
+}
+article#cuerpo {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 28px 24px;
+}
+article#cuerpo h1 {
+  font-size: 1.65rem;
+  line-height: 1.25;
+  margin: 0 0 1rem;
+}
+article#cuerpo p { margin: 0 0 1rem; max-width: 68ch; }
+article#cuerpo a { color: var(--accent); }
+.toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #123;
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 8px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s;
+}
+.toast.show { opacity: 1; }
+@media (max-width: 640px) {
+  .field { grid-template-columns: 40px 1fr; }
+  .field label { grid-column: 2; padding-top: 0; }
+  .field input, .field textarea { grid-column: 2; }
+}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <h1 class="page-title">Nota lista para crear en MN</h1>
+    <p class="hint">Abrí este archivo en el navegador. A la izquierda de cada campo, el botón copia al clipboard.</p>
+
+    <section class="meta" aria-label="Metadatos">
+    <div class="field">
+      <button type="button" class="copy-btn" title="Copiar Título" onclick="copyField('title', this)">⧉</button>
+      <label for="title">Título</label>
+      <input id="title" type="text" readonly value="Carballal: “Es un año positivo”; el plan de obras ya empezó a verse en las calles">
+    </div>
+    <div class="field">
+      <button type="button" class="copy-btn" title="Copiar Slug" onclick="copyField('slug', this)">⧉</button>
+      <label for="slug">Slug</label>
+      <input id="slug" type="text" readonly value="carballal-balance-primer-ano-obras">
+    </div>
+    <div class="field">
+      <button type="button" class="copy-btn" title="Copiar Resumen" onclick="copyField('excerpt', this)">⧉</button>
+      <label for="excerpt">Resumen</label>
+      <textarea id="excerpt" readonly rows="3">El alcalde de Punta del Este hizo balance del primer año de gestión: planificación con la Intendencia, plan 2030 y asfaltado ya en marcha en las paradas.</textarea>
+    </div>
+    <div class="field">
+      <button type="button" class="copy-btn" title="Copiar Fecha" onclick="copyField('publishedAt', this)">⧉</button>
+      <label for="publishedAt">Fecha</label>
+      <input id="publishedAt" type="text" readonly value="Jul 17, 2026 4:00 PM">
+    </div>
+    <div class="field">
+      <button type="button" class="copy-btn" title="Copiar Spotify" onclick="copyField('spotify', this)">⧉</button>
+      <label for="spotify">Spotify</label>
+      <input id="spotify" type="text" readonly value="https://open.spotify.com/episode/1hDdY4aLrs2pqvyJzQQJdo">
+    </div>
+    <div class="field">
+      <button type="button" class="copy-btn" title="Copiar Invitado" onclick="copyField('invitado', this)">⧉</button>
+      <label for="invitado">Invitado</label>
+      <input id="invitado" type="text" readonly value="Javier Carballal">
+    </div>
+    <div class="field">
+      <button type="button" class="copy-btn" title="Copiar Episodio" onclick="copyField('episodio', this)">⧉</button>
+      <label for="episodio">Episodio</label>
+      <input id="episodio" type="text" readonly value="164">
+    </div>
+    </section>
+
+    <div class="toolbar">
+      <button type="button" onclick="copyBodyHtml(this)">Copiar cuerpo HTML</button>
+      <button type="button" class="secondary" onclick="copyBodyText(this)">Copiar cuerpo texto</button>
+    </div>
+
+    <article id="cuerpo">
+      <h1>Carballal: “Es un año positivo”; el plan de obras ya empezó a verse en las calles</h1>
+        <p>El alcalde de Punta del Este, Javier Carballal, hizo un balance del primer año de este período de gobierno y marcó el tono: planificar primero, acelerar después. En diálogo con Martín Nocetti en <b>La mejor manera de comenzar la mañana</b>, dijo que los años de cambio de administración suelen ser lentos —proyección de cuentas, presupuesto y detalle técnico con la Intendencia— y que recién después llegan las obras a la calle.</p>
+        <p>Según Carballal, el municipio y el departamento trabajan sobre un plan de obras proyectado hacia 2030, con foco en calles, centros deportivos, salud, educación y desarrollo social. <i>“Ahora tenemos que apretar el acelerador”</i>, planteó, y señaló que el asfaltado ya arrancó: varias calles en la zona de parada 2 y trabajos en marcha en paradas 4 y 5.</p>
+        <p>También anticipó coordinación con OSE/UGD e Intendencia para no <i>“arreglar para después romper”</i>: en barrios donde viene saneamiento, el bacheo será provisorio hasta que avance la obra mayor. El mensaje a los vecinos fue claro: molestia al principio, mejora estructural después.</p>
+        <p>Escuchá la nota completa en <a href="https://open.spotify.com/episode/1hDdY4aLrs2pqvyJzQQJdo" target="_blank" rel="noopener noreferrer">Spotify</a>.</p>
+    </article>
+  </div>
+  <div id="toast" class="toast" role="status"></div>
+  <script>
+async function copyText(text, btn) {
+  try {
+    await navigator.clipboard.writeText(text);
+  } catch (e) {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    ta.remove();
+  }
+  if (btn) {
+    btn.classList.add('ok');
+    const prev = btn.textContent;
+    btn.textContent = '✓';
+    setTimeout(() => { btn.classList.remove('ok'); btn.textContent = prev; }, 900);
+  }
+  const toast = document.getElementById('toast');
+  toast.textContent = 'Copiado';
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 1200);
+}
+function copyField(id, btn) {
+  const el = document.getElementById(id);
+  copyText(el.value, btn);
+}
+function copyBodyHtml(btn) {
+  const html = document.getElementById('cuerpo').innerHTML.trim();
+  copyText(html, btn);
+}
+function copyBodyText(btn) {
+  const text = document.getElementById('cuerpo').innerText.trim();
+  copyText(text, btn);
+}
+</script>
+</body>
+</html>
