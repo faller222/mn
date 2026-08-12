@@ -1,1 +1,20 @@
-/* Payload admin overrides — keep minimal */
+/* Payload admin overrides */
+:root {
+  --mn-wax: #dcb63f;
+  --mn-wax-soft: #e2c56a;
+}
+
+/* Outline / focus ring → wax (mismo dorado primario del sitio) */
+:where(a, button, input, select, textarea, summary, [tabindex]:not([tabindex='-1'])):focus-visible {
+  outline: 2px solid var(--mn-wax);
+  outline-offset: 2px;
+}
+
+:where(a, button, input, select, textarea, summary, [tabindex]:not([tabindex='-1'])):focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Controles nativos (checkbox/radio) alineados al primario */
+:where(input[type='checkbox'], input[type='radio']) {
+  accent-color: var(--mn-wax);
+}

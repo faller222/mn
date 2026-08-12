@@ -4,6 +4,9 @@
   --black: #000000;
   --gold: #dcb63f;
   --gold-soft: #e2c56a;
+  /* Alias de marca: wax = dorado primario */
+  --wax: var(--gold);
+  --wax-soft: var(--gold-soft);
   --ink: #f4efe2;
   --muted: rgba(244, 239, 226, 0.72);
   --line: rgba(220, 182, 63, 0.28);
@@ -53,6 +56,16 @@ input,
 select,
 textarea {
   font: inherit;
+}
+
+/* Outline / focus ring → wax (reemplaza el azul por defecto del browser) */
+:where(a, button, input, select, textarea, summary, [tabindex]:not([tabindex='-1'])):focus-visible {
+  outline: 2px solid var(--wax);
+  outline-offset: 2px;
+}
+
+:where(a, button, input, select, textarea, summary, [tabindex]:not([tabindex='-1'])):focus:not(:focus-visible) {
+  outline: none;
 }
 
 .site-shell {

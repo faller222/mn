@@ -19,7 +19,11 @@ export const Media: CollectionConfig = {
       label: 'Texto alternativo',
       required: true,
       admin: {
-        description: 'Descripción de la imagen para accesibilidad y SEO.',
+        description:
+          'Una frase que describa la imagen (accesibilidad + buscadores). Tocá (?) para la guía.',
+        components: {
+          Label: '@/components/admin/AltTextLabel#AltTextLabel',
+        },
       },
     },
   ],

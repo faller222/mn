@@ -1,6 +1,23 @@
-import type { CollectionAfterChangeHook, CollectionConfig } from 'payload'
+import type { CollectionAfterChangeHook, CollectionConfig, FieldHook, TextFieldValidation } from 'payload'
 import { revalidatePath } from 'next/cache'
 import { publicPostWhere } from '@/lib/post-types'
+import { isValidSlug, normalizeSlug } from '@/lib/slug'
+
+const normalizeSlugHook: FieldHook = ({ value }) => {
+  if (typeof value !== 'string') return value
+  return normalizeSlug(value)
+}
+
+const validateSlug: TextFieldValidation = (value) => {
+  if (value == null || value === '') return 'El slug es obligatorio.'
+  if (typeof value !== 'string') return 'Slug inválido.'
+  // Validamos el valor normalizado para no marcar error mientras tipean un guión al final.
+  const normalized = normalizeSlug(value)
+  if (!isValidSlug(normalized)) {
+    return 'Usá solo minúsculas, números y guiones (ej: entrevista-leticia-correa).'
+  }
+  return true
+}
 
 const revalidatePublicPosts: CollectionAfterChangeHook = ({ doc, previousDoc }) => {
   revalidatePath('/noticias')
@@ -50,9 +67,17 @@ export const Posts: CollectionConfig = {
       required: true,
       unique: true,
       index: true,
+      hooks: {
+        beforeValidate: [normalizeSlugHook],
+      },
+      validate: validateSlug,
       admin: {
         position: 'sidebar',
-        description: 'Identificador en la URL. Ej: entrevista-leticia-correa',
+        description: 'Se corrige solo: espacios→guión, sin tildes. Ej: entrevista-leticia-correa',
+        placeholder: 'entrevista-nombre-apellido',
+        components: {
+          Field: '@/components/admin/SlugField#SlugField',
+        },
       },
     },
     {
