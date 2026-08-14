@@ -1,29 +1,75 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 
-const SRC = 'https://ficus-faller.vercel.app/embed/footer.js'
+const SRC = 'https://ficus-ochre.vercel.app/embed/footer.js?lang=es'
 
-function hostsNeedInit() {
-  return [...document.querySelectorAll('[data-ficus]')].some((el) => !el.shadowRoot)
+type LoadState = 'idle' | 'loading' | 'ok' | 'fail'
+
+let loadState: LoadState = 'idle'
+
+function hostOf(root: HTMLElement | null) {
+  return root?.querySelector('[data-ficus]') ?? null
 }
 
-/** Credit "Desarrollado por Ficus" — mount point + async embed script. */
+function markReady(root: HTMLElement | null) {
+  if (hostOf(root)?.shadowRoot) root?.classList.add('ficus-footer--ready')
+}
+
+function hideAll() {
+  document.querySelectorAll('.ficus-footer').forEach((el) => {
+    el.setAttribute('hidden', '')
+  })
+}
+
+function inject(src: string, onOk: () => void) {
+  const script = document.createElement('script')
+  script.src = src
+  script.async = true
+  script.onload = onOk
+  script.onerror = () => {
+    loadState = 'fail'
+    script.remove()
+    hideAll()
+  }
+  document.body.appendChild(script)
+}
+
+/** Credit Ficus: browser-only. A dead embed must not affect Payload or the Vercel build. */
 export function FicusFooter() {
+  const rootRef = useRef<HTMLDivElement>(null)
+
   useEffect(() => {
-    if (!hostsNeedInit()) return
+    const root = rootRef.current
+    if (!root) return
 
-    const existing = document.querySelector<HTMLScriptElement>('script[src*="embed/footer.js"]')
-    existing?.remove()
+    if (loadState === 'fail') {
+      root.setAttribute('hidden', '')
+      return
+    }
 
-    const script = document.createElement('script')
-    script.src = existing ? `${SRC}?lang=es&r=${Date.now()}` : `${SRC}?lang=es`
-    script.async = true
-    document.body.appendChild(script)
+    if (hostOf(root)?.shadowRoot) {
+      markReady(root)
+      return
+    }
+
+    if (loadState === 'ok') {
+      inject(`${SRC}&r=${Date.now()}`, () => markReady(root))
+      return
+    }
+
+    if (loadState === 'loading') return
+
+    loadState = 'loading'
+    inject(SRC, () => {
+      loadState = hostOf(root)?.shadowRoot ? 'ok' : 'fail'
+      if (loadState === 'ok') markReady(root)
+      else hideAll()
+    })
   }, [])
 
   return (
-    <div className="ficus-footer">
+    <div ref={rootRef} className="ficus-footer">
       <div data-ficus="es" />
     </div>
   )
