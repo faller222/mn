@@ -29,6 +29,10 @@ export default buildConfig({
     importMap: {
       baseDir: path.resolve(dirname),
     },
+    components: {
+      afterLogin: ['@/components/admin/FicusFooter#FicusFooter'],
+      afterNav: ['@/components/admin/FicusFooter#FicusFooter'],
+    },
   },
   i18n: {
     fallbackLanguage: 'es',

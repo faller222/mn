@@ -18,3 +18,19 @@
 :where(input[type='checkbox'], input[type='radio']) {
   accent-color: var(--mn-wax);
 }
+
+/* Ficus embed — pie del nav y del login */
+.ficus-footer {
+  margin-top: 0.75rem;
+  padding-top: 0.65rem;
+  border-top: 1px solid var(--theme-elevation-100);
+  width: 100%;
+}
+
+.template-minimal .ficus-footer {
+  margin-top: 1.25rem;
+  padding-top: 0;
+  border-top: none;
+  display: flex;
+  justify-content: center;
+}

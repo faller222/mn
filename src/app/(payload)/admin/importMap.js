@@ -27,6 +27,7 @@ import { EmailMessageField as EmailMessageField_4deaf8a6629efa4e0187c735dca781d5
 import { AttachmentsRawField as AttachmentsRawField_355287542e753c81cb1dc5ef2251bbb5 } from '@/components/admin/inbox/AttachmentsRawField'
 import { HiddenSaveButton as HiddenSaveButton_990c537d09514362d15984bfdb7756f6 } from '@/components/admin/inbox/HiddenSaveButton'
 import { InboxListView as InboxListView_37202598a5d324147f9dfc9e883d7084 } from '@/components/admin/inbox/InboxListView'
+import { FicusFooter as FicusFooter_b27ef641714ae2ea42566f35ca43b0af } from '@/components/admin/FicusFooter'
 import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
 
 /** @type import('payload').ImportMap */
@@ -60,5 +61,6 @@ export const importMap = {
   "@/components/admin/inbox/AttachmentsRawField#AttachmentsRawField": AttachmentsRawField_355287542e753c81cb1dc5ef2251bbb5,
   "@/components/admin/inbox/HiddenSaveButton#HiddenSaveButton": HiddenSaveButton_990c537d09514362d15984bfdb7756f6,
   "@/components/admin/inbox/InboxListView#InboxListView": InboxListView_37202598a5d324147f9dfc9e883d7084,
+  "@/components/admin/FicusFooter#FicusFooter": FicusFooter_b27ef641714ae2ea42566f35ca43b0af,
   "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1
 }
